@@ -1,0 +1,5 @@
+{
+  "updated": "2026-09-14",
+  "note": "One entry per registered call. `post` is the X post id of the call, `asset` the ticker it names, `side` long or short, `ca` the coin address once launched. Every number on the site — the post's views, the caller's followers, the asset's price now and at the time of the call — is read live from X, Yahoo Finance, Dexscreener and Blockscout. Nothing here is a number.",
+  "calls": []
+}

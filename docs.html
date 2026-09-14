@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>call · docs</title>
+<link rel="icon" href="/assets/favicon-32.png">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#100c0a;--ink:#f6ecd9;--mute:#b39a78;--line:rgba(255,184,64,.16);--mint:#ffd27a;--acid:#ffb840}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Inter,system-ui,sans-serif}
+a{color:var(--mint);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:820px;margin:0 auto;padding:40px 20px 80px}
+h1{font-family:"Instrument Serif",serif;font-weight:400;font-size:56px;line-height:1;margin:10px 0 8px}h1 em{color:var(--mint)}
+h2{font-family:"Instrument Serif",serif;font-weight:400;font-size:32px;margin:48px 0 10px}
+p,li{color:var(--mute)}code,pre{font:13px/1.55 JetBrains Mono,monospace}code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;color:var(--ink)}
+pre{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;color:#cdebd8;margin:10px 0}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:13px}.top a{color:var(--mute)}
+.try{display:flex;gap:8px;margin:8px 0 6px;flex-wrap:wrap}.try input{flex:1;min-width:200px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);font:inherit;outline:0}
+.try button{padding:8px 16px;border-radius:999px;border:0;background:var(--acid);color:#1a1000;font:inherit;font-weight:600;cursor:pointer}
+.out{white-space:pre-wrap;min-height:20px}.tag{display:inline-block;font:11px JetBrains Mono,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--acid);border:1px solid rgba(62,229,90,.4);border-radius:999px;padding:3px 9px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px 6px;border-top:1px solid var(--line);color:var(--mute)}th{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body><div class="wrap">
+<div class="top"><a href="index.html">← call</a><span class="tag">docs · v1</span></div>
+<h1>Every call is a <em>coin.</em></h1>
+<p>What call is, exactly what pays whom, and the readers this site runs on. Nothing on the site is typed in by hand — every number comes from X, Yahoo Finance, Dexscreener or Blockscout at load time.</p>
+
+<h2>The rule</h2>
+<ol>
+<li>One coin per post. A call is a public post on X that names a ticker; the first Pons V2 launch on that post, with the call vault as <code>creatorFeeRecipient</code>, is its coin.</li>
+<li>Every trade pays the Pons 1% fee. 70% is the creator side; on a call coin that is the vault (0.5% of volume) and the launcher (0.2%). 30% (0.3%) goes to Pons.</li>
+<li>The call is scored as the asset's price now versus its daily close on the day of the post, read from Yahoo Finance, sign flipped for shorts. A deleted post scores zero.</li>
+<li>Every Friday 20:00 UTC the vault pays the holders of that week's best call — the largest gain in its direction — pro rata by balance at the snapshot, in USDG.</li>
+<li>The caller can claim the launcher's share of their own call any time by replying to the post with their claim code (below). Until then it accrues to the vault.</li>
+</ol>
+
+<h2>The money, in one breath</h2>
+<p>$100,000 of trading on a call coin in a day = $1,000 of fees = $500 to the vault, $200 to the launcher, $300 to Pons. The vault only ever holds fee income; it never buys or sells anything.</p>
+<pre>feeIncome24h   = volume.h24 × 0.007        # creator side of the 1% fee
+vaultIncome24h = volume.h24 × 0.005
+sinceCall      = (priceNow ÷ closeOnPostDay − 1) × (long ? +1 : −1)</pre>
+
+<h2>Launching</h2>
+<p>Paste the post on the site, check the asset and direction, copy the description, go to <a href="https://ponsvault.com/launch" target="_blank" rel="noopener">ponsvault.com/launch</a>, set the creator fee recipient to the vault address, launch. Pons gives the launcher no allocation — if you want a reserve, buy on the curve in the launch transaction. Then paste the CA in "Already launched?"; verified coins are added to <code>calls.json</code> by hand within the hour.</p>
+
+<h2>Claim code</h2>
+<p>Deterministic, so anyone can check it. FNV-1a over the post id and the coin address, base36, upper, 7 characters.</p>
+<pre id="fn">function claimCode(postId, ca){
+  let h = 0x811c9dc5 >>> 0;
+  for (const ch of (postId + ':' + ca.toLowerCase())) { h ^= ch.charCodeAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(36).toUpperCase().padStart(7, '0').slice(-7);
+}</pre>
+<div class="try"><input id="ch" placeholder="post id"><input id="cc" placeholder="0x… coin address"><button onclick="calc()">compute</button></div>
+<div class="out" id="cout"></div>
+
+<h2>Registry</h2>
+<p><a href="calls.json">calls.json</a> — one entry per call. <code>post</code> is the X post id, <code>asset</code> the ticker, <code>side</code> long or short, <code>ca</code> the coin once verified.</p>
+<pre>{ "caller": "blknoiz06", "post": "1234567890123456789", "asset": "TSLA", "side": "long", "ca": "", "added": "2026-09-14" }</pre>
+
+<h2>Readers</h2>
+<p>Five serverless functions. Each has a try button that runs live.</p>
+<table><tr><th>route</th><th>source</th><th>returns</th></tr>
+<tr><td><code>/api/tweet?id=</code></td><td>FxTwitter (views) → syndication fallback</td><td>author, text, views, likes, reposts, created, url</td></tr>
+<tr><td><code>/api/handle?h=</code></td><td>FxTwitter → X syndication fallback</td><td>name, followers, verified, avatar, exists</td></tr>
+<tr><td><code>/api/price?sym=&at=</code></td><td>Yahoo Finance chart → Dexscreener search</td><td>price now, close at the call, change %, name, currency</td></tr>
+<tr><td><code>/api/avatar?h=</code></td><td>FxTwitter → pbs.twimg.com</td><td>the profile image bytes</td></tr>
+<tr><td><code>/api/coin?ca=</code></td><td>Blockscout + Dexscreener</td><td>holders, price, mcap, volume24, feeIncome24, holderYield</td></tr></table>
+<div class="try"><input id="t2" placeholder="tweet id or x.com/…/status/… url"><button onclick="run('/api/tweet?id=',t2,o2)">try /api/tweet</button></div><pre class="out" id="o2"></pre>
+<div class="try"><input id="t1" value="blknoiz06"><button onclick="run('/api/handle?h=',t1,o1)">try /api/handle</button></div><pre class="out" id="o1"></pre>
+<div class="try"><input id="t4" value="TSLA"><button onclick="run('/api/price?at='+(Math.floor(Date.now()/1000)-7*86400)+'&sym=',t4,o4)">try /api/price (7 days ago → now)</button></div><pre class="out" id="o4"></pre>
+<div class="try"><input id="t3" value="0x32fad9f482eb629dc7cb078824763e59441ee076"><button onclick="run('/api/coin?ca=',t3,o3)">try /api/coin</button></div><pre class="out" id="o3"></pre>
+
+<h2>Not on chain yet</h2>
+<p>The vault contract is not deployed. Until it is, the fee recipient on any call coin is a plain wallet published here the day it exists, with every payout tx listed under it. Nothing on this page claims otherwise.</p>
+
+<h2>Changelog</h2>
+<ul><li>2026-09-14 — v1. Board, week, launch form, five readers, this page.</li></ul>
+<script>
+function claimCode(handle, ca){let h=0x811c9dc5>>>0;for(const ch of (handle+':'+ca.toLowerCase())){h^=ch.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36).toUpperCase().padStart(7,'0').slice(-7)}
+function calc(){const h=ch.value.trim(),c=cc.value.trim();if(!/^\d{1,25}$/.test(h)||!/^0x[0-9a-fA-F]{40}$/.test(c)){cout.textContent='need a post id and a 0x address';return}cout.textContent='claim code for post '+h+': '+claimCode(h,c)}
+async function run(p,i,o){o.textContent='…';try{const r=await fetch(p+encodeURIComponent(i.value.trim().replace(/^@/,'')));o.textContent=JSON.stringify(await r.json(),null,2)}catch(e){o.textContent='error: '+e}}
+</script>
+</div></body></html>

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CALL</title>
+<meta name="description" content="Every call is a coin. Turn any trade call posted on X into a coin on Robinhood Chain. Friday settles it: hits get paid from real trade fees.">
+<meta property="og:title" content="call — every call is a coin">
+<meta property="og:description" content="Turn any call on X into a coin. Friday settles it. Read live from X and the market.">
+<meta property="og:image" content="/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon-32.png"><link rel="apple-touch-icon" href="/assets/pfp.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#100c0a;--bg2:#161009;--ink:#f6ecd9;--mute:#b39a78;--line:rgba(255,184,64,.16);--amb:#ffb840;--amb2:#ffd27a;--grn:#48d678;--red:#ff5c50;--card:rgba(255,255,255,.035);--glass:rgba(18,13,10,.74)}
+*{box-sizing:border-box}html{overflow-x:hidden;scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased;animation:pagein .6s ease both}@keyframes pagein{from{opacity:0}}
+[hidden]{display:none!important}a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}img{display:block}
+body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,184,64,.09) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
+body::after{content:"";position:fixed;inset:0;background:radial-gradient(55% 45% at 70% -10%,rgba(255,150,40,.22),transparent 70%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 20px}
+section[id]{scroll-margin-top:24px}
+.navwrap{position:sticky;top:14px;z-index:50;display:flex;justify-content:center;padding:0 16px}
+.nav{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.nav .brand{display:flex;align-items:center;gap:9px;margin-right:8px;font-family:"Instrument Serif",serif;font-style:italic;font-size:22px}
+.nav .brand img{width:24px;height:24px}
+.nav a.l{padding:7px 11px;border-radius:999px;color:var(--mute);font-size:14px}.nav a.l:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.nav .srch{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--mute);font-size:13px;margin-left:6px;background:rgba(0,0,0,.2)}
+.nav .srch input{background:none;border:0;outline:0;color:var(--ink);width:110px;font:inherit}.nav .srch kbd{font:11px JetBrains Mono,monospace;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+.btn{background:none;color:var(--ink);display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;border:1px solid transparent;font-weight:600;font-size:14px;transition:.15s}
+.btn.fill{background:var(--amb);color:#1a1000}.btn.fill:hover{filter:brightness(1.06)}.btn.line{border-color:rgba(255,184,64,.4)}.btn.line:hover{border-color:var(--amb)}.btn.sm{padding:7px 13px;font-size:13px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:78px 0 40px}
+h1{font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(46px,7vw,86px);line-height:.98;letter-spacing:-.01em;margin:0 0 20px}h1 em{font-style:italic;color:var(--amb)}
+.lead{font-size:17px;color:var(--mute);max-width:520px;margin:0 0 26px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.under{font:12px JetBrains Mono,monospace;color:var(--mute);margin-top:14px}
+/* incoming call card */
+.incoming{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center}
+.ring{position:absolute;border:1px solid rgba(255,184,64,.35);border-radius:50%;animation:ring 3.2s ease-out infinite;pointer-events:none}
+.ring:nth-child(2){animation-delay:1.06s}.ring:nth-child(3){animation-delay:2.12s}
+@keyframes ring{from{width:320px;height:200px;opacity:.9}to{width:820px;height:520px;opacity:0}}
+.ccard{position:relative;width:min(560px,100%);border:1px solid rgba(255,184,64,.45);border-radius:26px;background:rgba(24,17,12,.92);box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,220,160,.12);padding:26px;transition:opacity .5s,transform .5s}
+.ccard.sw{opacity:0;transform:translateY(8px)}
+.ccard .top{display:flex;gap:16px;align-items:center}.ccard .av{width:78px;height:78px;border-radius:50%;flex:none;background:#2a1f16 center/cover;box-shadow:0 0 0 3px var(--ink)}.ccard .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.ccard .nm{font-weight:700;font-size:22px}.ccard .h{font:13px JetBrains Mono,monospace;color:var(--mute)}
+.ccard .call{font-family:"Instrument Serif",serif;font-style:italic;font-size:38px;color:var(--amb);margin:14px 0 4px;line-height:1.05}
+.ccard .txt{color:var(--mute);font-size:14px;margin:0 0 16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ccard .bot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rb{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#0c1a10;border:0}.rb.ok{background:var(--grn)}.rb.no{background:var(--red);color:#2a0a08}
+.ccard .stat{font:13px JetBrains Mono,monospace;color:var(--mute)}.pct{font:600 15px JetBrains Mono,monospace}.pct.up{color:var(--grn)}.pct.dn{color:var(--red)}
+.ccard .dots{position:absolute;right:22px;top:22px;display:flex;gap:5px}.ccard .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,184,64,.3)}.ccard .dots i.on{background:var(--amb)}
+/* marquee */
+.wall{width:100vw;margin:30px 0 0 calc(50% - 50vw);padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--bg2)}
+.track{display:flex;width:max-content;animation:mq 70s linear infinite;will-change:transform}.wall:hover .track{animation-play-state:paused}@keyframes mq{to{transform:translateX(-50%)}}
+.chip{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 8px;margin-right:14px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:13px;white-space:nowrap;transition:.2s}.chip:hover{border-color:rgba(255,184,64,.6)}
+.chip .av{width:28px;height:28px;border-radius:50%;background:#2a1f16}.chip .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}.chip .f{font:12px JetBrains Mono,monospace;color:var(--mute)}
+.sh{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:70px 0 22px;flex-wrap:wrap}
+h2{font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(32px,4.5vw,52px);line-height:1.02;margin:0}h2 em{font-style:italic;color:var(--amb)}
+.sub{color:var(--mute);max-width:560px;margin:8px 0 0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute);font-size:13px;background:none}.tab.on{background:rgba(255,184,64,.14);border-color:rgba(255,184,64,.5);color:var(--ink)}.tab .n{font:11px JetBrains Mono,monospace;opacity:.7;margin-left:6px}
+.board{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card)}
+.row{display:grid;grid-template-columns:34px 1.5fr 1.3fr .9fr .9fr .9fr 130px;gap:14px;align-items:center;padding:14px 18px;border-top:1px solid var(--line);font-size:14px;transition:background .2s}.row:not(.head):hover{background:rgba(255,184,64,.04)}
+.row.head{border-top:0;font:11px JetBrains Mono,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:rgba(0,0,0,.18)}
+.row .rk{font:13px JetBrains Mono,monospace;color:var(--mute)}
+.who{display:flex;align-items:center;gap:12px;min-width:0}.who .av{width:40px;height:40px;border-radius:50%;flex:none;background:#2a1f16;box-shadow:0 0 0 2px rgba(246,236,217,.85)}.who .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.who .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.who .h{font:12px JetBrains Mono,monospace;color:var(--mute)}.who .h a:hover{color:var(--amb)}
+.cl{font-family:"Instrument Serif",serif;font-style:italic;font-size:22px;color:var(--amb2)}.cl small{font:12px JetBrains Mono,monospace;color:var(--mute);display:block;font-style:normal}
+.num{font:14px JetBrains Mono,monospace}.num.dim{color:var(--mute)}
+.st{display:inline-flex;align-items:center;gap:6px;font:12px JetBrains Mono,monospace;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.st.hit{color:var(--grn);border-color:rgba(72,214,120,.5)}.st.miss{color:var(--red);border-color:rgba(255,92,80,.5)}.st.live{color:var(--amb);border-color:rgba(255,184,64,.5)}.st.live b{width:6px;height:6px;border-radius:50%;background:var(--amb);box-shadow:0 0 8px var(--amb);animation:pulse 1.6s infinite}@keyframes pulse{50%{opacity:.35}}
+.row .act{display:flex;gap:6px;justify-content:end}
+.empty{padding:26px 18px;color:var(--mute);border-top:1px solid var(--line);font-size:14px}
+.addrow{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--line);background:rgba(0,0,0,.15);flex-wrap:wrap}
+.in{flex:1;min-width:200px;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink);font:inherit;outline:0}.in:focus{border-color:rgba(255,184,64,.6)}
+.av img{opacity:0;transition:opacity .5s}.av img.ok{opacity:1}
+.week{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{border:1px solid var(--line);border-radius:18px;padding:22px;background:var(--card)}
+.card h3{margin:0 0 6px;font-family:"Instrument Serif",serif;font-weight:400;font-size:28px}.card p{color:var(--mute);margin:0 0 14px}
+.big{font-family:"Instrument Serif",serif;font-size:56px;line-height:1;margin:6px 0 4px}.big small{font:12px JetBrains Mono,monospace;color:var(--mute);display:block;margin-top:8px}
+.bar{height:8px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin:8px 0 14px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#c97d1a,var(--amb));border-radius:99px;width:0;transition:width .8s}
+.race .r{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}.race .r:first-child{border-top:0}.race .av{width:34px;height:34px;border-radius:50%;background:#2a1f16}.race .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.launch{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.field{margin-bottom:14px}.field label{display:block;font:11px JetBrains Mono,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}.field .in{width:100%;border-radius:12px}
+.chk{display:flex;align-items:center;gap:12px;padding:12px;border:1px dashed var(--line);border-radius:12px;color:var(--mute);min-height:66px;font-size:14px}
+.chk .av{width:40px;height:40px;border-radius:50%;background:#2a1f16;flex:none}.chk .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden}.seg button{flex:1;padding:10px;background:none;border:0;color:var(--mute)}.seg button.on{background:rgba(255,184,64,.16);color:var(--ink)}
+.fees{display:grid;grid-template-columns:5fr 2fr 3fr;gap:3px;margin:6px 0 16px}.fees div{padding:9px 10px;border-radius:8px;font:12px JetBrains Mono,monospace}.fees .a{background:rgba(255,184,64,.3)}.fees .b{background:rgba(255,184,64,.14)}.fees .c{background:rgba(255,255,255,.06)}
+pre.desc{white-space:pre-wrap;font:13px/1.5 JetBrains Mono,monospace;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 12px;color:#e8d9bd}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.step::before{counter-increment:s;content:"0" counter(s);font:12px JetBrains Mono,monospace;color:var(--amb)}
+.step h4{margin:10px 0 6px;font-size:16px}.step p{margin:0;color:var(--mute);font-size:14px}
+.rule{display:grid;grid-template-columns:1fr;max-width:760px;margin-top:40px}
+.rule ol{list-style:none;padding:0;margin:0}.rule li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}.rule li:first-child{border-top:0}.rule li b{font-family:"Instrument Serif",serif;font-weight:400;font-size:26px;color:var(--amb)}.rule li p{margin:0;color:var(--mute)}
+.faq{max-width:760px}details{border-top:1px solid var(--line);padding:16px 0}details summary{cursor:pointer;font-weight:600;list-style:none;font-size:17px}details summary::after{content:"+";float:right;color:var(--amb)}details[open] summary::after{content:"–"}details p{color:var(--mute);margin:8px 0 0}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}.rv.vis{opacity:1;transform:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--amb);color:#1a1000;padding:10px 16px;border-radius:999px;font-weight:600;transition:.25s;z-index:99;pointer-events:none}.toast.on{opacity:1;transform:translateX(-50%)}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:50px}.row{grid-template-columns:28px 1.4fr 1.2fr .9fr 100px}.row .c4,.row .c5{display:none}.week,.launch{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.nav .srch,.nav a.l.opt{display:none}}
+@media(max-width:560px){.row{grid-template-columns:24px 1.4fr 1fr 90px}.row .c3{display:none}.steps{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="navwrap"><nav class="nav">
+  <a class="brand" href="#top"><img src="assets/pfp.jpg" alt="">call</a>
+  <a class="l" href="#calls">calls</a><a class="l" href="#week">the week</a><a class="l" href="#launch">launch</a><a class="l opt" href="#rule">rule</a><a class="l opt" href="#faq">faq</a>
+  <label class="srch"><span>Search</span><input id="q" placeholder="$TSLA / @handle" autocomplete="off"><kbd>/</kbd></label>
+  <a class="btn fill sm" href="docs.html">docs ↗</a>
+</nav></div>
+
+<main class="wrap" id="top">
+<section class="hero">
+  <div>
+    <h1>Every call<br>is a <em>coin.</em></h1>
+    <p class="lead">Someone on X posts a call — "$TSLA long", "$SOL 300 by Friday". Paste the post, launch its coin on Robinhood Chain. Every trade pays the call vault. Friday settles it: if the call hit, its holders get paid. Post, price and result are read live. No invented numbers.</p>
+    <div class="cta"><a class="btn fill" href="#launch">Turn a call into a coin</a><a class="btn line" href="#calls">See the board</a></div>
+  </div>
+  <div class="incoming"><i class="ring"></i><i class="ring"></i><i class="ring"></i>
+    <div class="ccard" id="ccard">
+      <div class="dots" id="cdots"></div>
+      <div class="top"><div class="av" id="cav"></div><div><div class="nm" id="cnm">No call registered yet</div><div class="h" id="ch">the first one opens the board</div></div></div>
+      <div class="call" id="ccall">Paste a call from X</div>
+      <p class="txt" id="ctxt">The post is read live from X, the asset price from the market, and the result is scored on Friday.</p>
+      <div class="bot"><button class="rb ok" title="hit">✓</button><button class="rb no" title="miss">✕</button><span class="stat" id="cstat">holders decide · settles friday</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wall"><div class="track" id="track"></div></div>
+
+<section id="calls">
+  <div class="sh rv"><div><h2>The <em>board.</em></h2><p class="sub">Each row is a real post on X. Since-call % is the asset's price now versus its close on the day of the post (Yahoo Finance). Views come from X, market cap from Dexscreener.</p></div>
+  <div class="tabs" id="tabs"><button class="tab on" data-k="live">live</button><button class="tab" data-k="pct">since call</button><button class="tab" data-k="views">views</button><button class="tab" data-k="coin">with a coin<span class="n" id="ncoin">0</span></button></div></div>
+  <div class="board rv">
+    <div class="row head"><span>#</span><span>caller</span><span>call</span><span class="c3">since call</span><span class="c4">views</span><span class="c5">market cap</span><span>status</span></div>
+    <div id="rows"></div>
+  </div>
+</section>
+
+<section id="week">
+  <div class="sh rv"><div><h2>The <em>week.</em></h2><p class="sub">Every call coin's fee income lands in one vault. Friday 20:00 UTC the week's best call — largest gain in its direction — pays its holders, pro rata.</p></div></div>
+  <div class="week rv">
+    <div class="card"><h3>Vault</h3><p>Fee income collected this week from every call coin.</p><div class="big" id="vault">—<small id="vaultsub">no call coin on chain yet · the vault starts at the first launch</small></div><div class="bar"><i id="wbar"></i></div><div class="under" id="wleft"></div></div>
+    <div class="card"><h3>Best call right now</h3><p>Registered calls ranked by gain in their direction.</p><div class="race" id="race"><div class="empty" style="border:0;padding:8px 0">No call registered yet.</div></div></div>
+  </div>
+</section>
+
+<section id="launch">
+  <div class="sh rv"><div><h2>Turn a call into a <em>coin.</em></h2><p class="sub">Paste the post. We read it from X, pull the ticker out of the text, price it live, and write the Pons description.</p></div></div>
+  <div class="launch rv">
+    <div class="card">
+      <div class="field"><label>the call · x.com post URL or id</label><input class="in" id="lp" placeholder="https://x.com/blknoiz06/status/…" autocomplete="off"></div>
+      <div class="chk" id="lchk">Paste a post — we read it from X.</div>
+      <div class="two" style="margin-top:14px"><div class="field"><label>asset</label><input class="in" id="la" placeholder="$TSLA"></div><div class="field"><label>direction</label><div class="seg" id="lside"><button class="on" data-s="long">long ↑</button><button data-s="short">short ↓</button></div></div></div>
+      <div class="chk" id="lprice">Price appears when the asset is known.</div>
+      <div class="field" style="margin-top:14px"><label>fee split · 1% per trade</label><div class="fees"><div class="a">0.5% · call vault</div><div class="b">0.2% · launcher</div><div class="c">0.3% · pons</div></div></div>
+      <div class="field"><label>pons description</label><pre class="desc" id="ldesc">—</pre></div>
+      <div class="cta"><button class="btn fill" id="ladd">Add the call to the board</button><button class="btn line" id="lcopy">Copy description</button><a class="btn line" href="https://ponsvault.com/launch" target="_blank" rel="noopener">Open Pons ↗</a></div>
+      <div class="under">Set the creator fee recipient to the call vault address (in docs once it is on chain). Pons gives the launcher no allocation — buy on the curve in the launch tx if you want a reserve.</div>
+    </div>
+    <div class="card">
+      <h3>Already launched?</h3><p>Paste the contract address. We read it from Blockscout and Dexscreener and add the call to the board.</p>
+      <div class="field"><input class="in" id="rca" placeholder="0x…"></div>
+      <div class="cta"><button class="btn line" id="rgo">Check on chain</button></div>
+      <div class="chk" id="rout" style="margin-top:14px">Nothing checked yet.</div>
+      <div class="under" style="margin-top:18px">Verified coins are added to calls.json by hand within the hour. Until then the call lives in this browser only.</div>
+      <h3 style="margin-top:26px">Tell the caller</h3><p>One reply, from you, under their post. They can't stop the coin; they can claim the launcher share by replying with the code in docs.</p>
+      <a class="btn line" id="tell" href="#" target="_blank" rel="noopener">Reply on X ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="rule">
+  <div class="sh rv"><div><h2>How it <em>works.</em></h2></div></div>
+  <div class="steps rv">
+    <div class="step"><h4>Paste a call</h4><p>Any post on X that names a ticker. We read the post, the author and the view count live.</p></div>
+    <div class="step"><h4>Launch on Pons</h4><p>Bonding curve → Uniswap v4, liquidity locked by the PONS hook. The vault is the fee recipient.</p></div>
+    <div class="step"><h4>Price it</h4><p>Close on the day of the post vs price now, from Yahoo Finance. Direction decides the sign.</p></div>
+    <div class="step"><h4>Friday settles</h4><p>The best call of the week pays its holders from the vault. Pro rata, on chain, in USDG.</p></div>
+  </div>
+  <div class="rule rv">
+    <ol>
+      <li><b>I</b><p>One coin per post. The first launch on a post is the coin; later ones are not listed.</p></li>
+      <li><b>II</b><p>Prices are read from the market, never entered. A deleted post scores zero.</p></li>
+      <li><b>III</b><p>The vault only holds fee income. It never buys, never sells, never holds coins.</p></li>
+      <li><b>IV</b><p>The caller can claim the launcher share any time by replying with their claim code. Until then it accrues to the vault.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="sh rv"><div><h2>Questions, <em>answered.</em></h2></div></div>
+  <div class="faq rv">
+    <details open><summary>What counts as a call?</summary><p>Any public post on X that names a ticker — a stock or a coin — with a direction. "$TSLA long", "$SOL 300", "short this". You pick the asset and the direction when you register; the post is the receipt.</p></details>
+    <details><summary>How is "since call" computed?</summary><p>The asset's close on the day the post was published versus its price right now, both from Yahoo Finance, sign flipped for shorts. Memecoins with no history show price now only.</p></details>
+    <details><summary>Does the caller have to agree?</summary><p>No. It's a coin about a public call. The caller can claim the launcher's share any time by replying with their claim code, and profit from being right.</p></details>
+    <details><summary>Where does the money come from?</summary><p>Only from the 1% trade fee on Pons. 0.5% to the vault, 0.2% to the launcher, 0.3% to Pons. No emissions, no treasury, no promises.</p></details>
+    <details><summary>Who gets paid?</summary><p>Friday 20:00 UTC, the holders of the call coin with the largest gain in its direction that week — pro rata by balance at the snapshot, in USDG.</p></details>
+    <details><summary>Is the vault live?</summary><p>Not yet. The vault address is published in docs the moment it's on chain, with the payout tx list under it.</p></details>
+  </div>
+</section>
+<div style="height:60px"></div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const fmt=n=>n==null?'—':n>=1e9?(n/1e9).toFixed(2)+'B':n>=1e6?(n/1e6).toFixed(n>=1e7?1:2)+'M':n>=1e3?(n/1e3).toFixed(n>=1e5?0:1)+'K':String(n);
+const usd=n=>n==null?'—':'$'+fmt(Math.round(n));
+const px=n=>n==null?'—':'$'+(n>=100?n.toFixed(2):n>=1?n.toFixed(3):n.toPrecision(3));
+const pct=n=>n==null?'—':(n>=0?'+':'')+n.toFixed(2)+'%';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const SIL='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#2a1f16"/><circle cx="50" cy="38" r="18" fill="#5a4530"/><path d="M14 100c4-24 18-36 36-36s32 12 36 36z" fill="#5a4530"/></svg>');
+const avEl=(src,cls='av',h)=>{const d=document.createElement('div');d.className=cls;const i=new Image();i.referrerPolicy='no-referrer';i.decoding='async';let step=0;i.onload=()=>i.classList.add('ok');i.onerror=()=>{step++;if(step===1&&h)i.src='/api/avatar?h='+encodeURIComponent(h);else i.src=SIL};i.src=src||(h?'/api/avatar?h='+encodeURIComponent(h):SIL);d.appendChild(i);return d};
+const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)};
+const copy=async t=>{try{await navigator.clipboard.writeText(t);toast('Copied')}catch(e){prompt('Copy:',t)}};
+const cache={};const J=async(u)=>{if(cache[u])return cache[u];try{const r=await fetch(u);const j=await r.json();if(j&&!j.error)cache[u]=j;return j}catch(e){return {exists:null}}};
+const readTweet=id=>J('/api/tweet?id='+encodeURIComponent(id));
+const readHandle=h=>J('/api/handle?h='+encodeURIComponent(h));
+const readPrice=(s,at)=>J('/api/price?sym='+encodeURIComponent(s)+(at?'&at='+at:''));
+async function readCoin(ca){let j=await J('/api/coin?ca='+ca);if(!j||j.holders==null){j=j||{ca,exists:null};for(let k=0;k<2&&j.holders==null;k++){try{const r=await fetch('https://robinhoodchain.blockscout.com/api/v2/tokens/'+ca,{headers:{accept:'application/json'}});if(r.ok){const b=await r.json();j.exists=true;j.holders=b.holders_count!=null?+b.holders_count:null;j.name=j.name||b.name;j.symbol=j.symbol||b.symbol}else if(r.status===404&&j.exists!==true)j.exists=false}catch(e){}}}return j}
+const tid=s=>{s=String(s||'').trim();const m=s.match(/status\/(\d{1,25})/);return m?m[1]:(/^\d{1,25}$/.test(s)?s:null)};
+const tickerOf=t=>{const m=(t||'').match(/\$([A-Za-z]{1,10})\b/);return m?m[1].toUpperCase():null};
+const sideOf=t=>/\b(short|dump|down|sell|fade)\b/i.test(t||'')?'short':'long';
+const unix=d=>Math.floor(new Date(d).getTime()/1000);
+const gain=c=>{if(!c.p||c.p.change==null)return null;return c.side==='short'?-c.p.change:c.p.change};
+const local=()=>{try{return JSON.parse(localStorage.getItem('call.local')||'[]')}catch(e){return []}};
+const saveLocal=l=>{try{localStorage.setItem('call.local',JSON.stringify(l))}catch(e){}};
+
+let LIST=[],SORT='live';
+async function enrich(c){c.t=await readTweet(c.post);if(c.t?.exists){c.asset=c.asset||tickerOf(c.t.text);c.side=c.side||sideOf(c.t.text);c.caller=c.caller||c.t.author;c.x=await readHandle(c.caller);if(c.asset)c.p=await readPrice(c.asset,unix(c.t.created))}if(c.ca)c.coin=await readCoin(c.ca);return c}
+async function boot(){
+  let reg={calls:[]};try{reg=await (await fetch('calls.json?'+Date.now())).json()}catch(e){}
+  const seen=new Set();LIST=[...reg.calls,...local()].filter(c=>c.post&&!seen.has(c.post)&&seen.add(c.post)).map(c=>({...c}));
+  render();await Promise.all(LIST.map(enrich));render();wall();week();hero();
+}
+function status(c){if(!c.t)return '<span class="st">…</span>';if(c.t.exists===false)return '<span class="st">post deleted</span>';const g=gain(c);const settled=c.settled;if(settled)return g>=0?'<span class="st hit">hit</span>':'<span class="st miss">miss</span>';return '<span class="st live"><b></b>live</span>'}
+function render(){
+  const rows=$('#rows');rows.innerHTML='';let L=LIST.filter(c=>c.t?.exists!==false);
+  if(SORT==='coin')L=L.filter(c=>c.ca);
+  const key={live:c=>unix(c.t?.created||0),pct:c=>gain(c)??-1e9,views:c=>c.t?.views||0,coin:c=>c.coin?.marketCap||0}[SORT];L.sort((a,b)=>key(b)-key(a));
+  $('#ncoin').textContent=LIST.filter(c=>c.ca).length;
+  if(!L.length){rows.innerHTML='<div class="empty">No call on the board yet. Register the first one in <a href="#launch" style="color:var(--amb)">Turn a call into a coin</a>.</div>';return}
+  L.forEach((c,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML=`<span class="rk">${i+1}</span>`;
+    const who=document.createElement('div');who.className='who';who.appendChild(avEl(c.x?.avatar||c.t?.avatar,'av',c.caller));
+    const t=document.createElement('div');t.innerHTML=`<div class="nm">${esc(c.x?.name||c.caller||'…')}</div><div class="h"><a href="${esc(c.t?.url||('https://x.com/'+c.caller))}" target="_blank" rel="noopener">@${esc(c.caller||'')} · post ↗</a></div>`;who.appendChild(t);r.appendChild(who);
+    const g=gain(c);
+    r.insertAdjacentHTML('beforeend',`<span class="cl">${c.asset?'$'+esc(c.asset):'—'} ${c.side==='short'?'↓':'↑'}<small>${c.p?px(c.p.atPrice)+' → '+px(c.p.price):'…'}</small></span><span class="num c3 pct ${g==null?'dim':g>=0?'up':'dn'}">${pct(g)}</span><span class="num c4 ${c.t?.views?'':'dim'}">${fmt(c.t?.views)}</span><span class="num c5 ${c.coin?.marketCap?'':'dim'}">${c.coin?usd(c.coin.marketCap):'—'}</span><span>${status(c)}</span>`);
+    rows.appendChild(r)});
+}
+$('#tabs').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;[...$('#tabs').children].forEach(x=>x.classList.toggle('on',x===b));SORT=b.dataset.k;render()};
+$('#q').oninput=e=>{const v=e.target.value.toLowerCase().replace(/^[@$]/,'');[...$('#rows').children].forEach(r=>{r.hidden=v&&!r.textContent.toLowerCase().includes(v)})};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('#q').focus()}});
+async function addCall(id,asset,side,ca){if(LIST.some(c=>c.post===id))return toast('Already on the board');const c={post:id,asset:asset||null,side:side||null,ca:ca||'',caller:null};await enrich(c);if(c.t?.exists===false)return toast('No such post on X');if(c.t?.exists==null)return toast('Could not read X right now');
+  LIST.push(c);const l=local();l.push({post:id,asset:c.asset,side:c.side,ca:c.ca,caller:c.caller});saveLocal(l);render();wall();week();hero();toast('Added · @'+c.caller+(c.asset?' · $'+c.asset:''));return c}
+function wall(){const tr=$('#track');tr.innerHTML='';const L=LIST.filter(c=>c.t?.exists);if(!L.length){tr.innerHTML='<span class="chip"><span class="f">no calls yet · paste the first one</span></span>'.repeat(6);return}
+  const mk=c=>{const d=document.createElement('a');d.className='chip';d.href=c.t.url;d.target='_blank';d.rel='noopener';d.appendChild(avEl(c.x?.avatar||c.t.avatar,'av',c.caller));const g=gain(c);d.insertAdjacentHTML('beforeend',`<span>@${esc(c.caller)} · $${esc(c.asset||'?')} ${c.side==='short'?'↓':'↑'}</span><span class="f ${g==null?'':g>=0?'up':'dn'}" style="color:${g==null?'':g>=0?'var(--grn)':'var(--red)'}">${pct(g)}</span>`);return d};[...L,...L,...L].forEach(c=>tr.appendChild(mk(c)))}
+function week(){const inc=LIST.reduce((a,c)=>a+(c.coin?.feeIncome24||0),0);const has=LIST.some(c=>c.coin?.volume24!=null);
+  $('#vault').firstChild.textContent=has?usd(inc*7)+' ':'— ';$('#vaultsub').textContent=has?'≈ 7 × today\'s fee income across every call coin (Dexscreener h24 × 0.7%)':'no call coin on chain yet · the vault starts at the first launch';
+  const now=new Date();const day=(now.getUTCDay()+2)%7;const p=Math.min(1,(day*24+now.getUTCHours()-20+24)%168/168);$('#wbar').style.width=(p*100).toFixed(1)+'%';$('#wleft').textContent=`week ${Math.round(p*100)}% through · settles Friday 20:00 UTC`;
+  const R=LIST.filter(c=>gain(c)!=null).sort((a,b)=>gain(b)-gain(a));const el=$('#race');if(!R.length)return;el.innerHTML='';
+  R.slice(0,6).forEach(c=>{const r=document.createElement('div');r.className='r';r.appendChild(avEl(c.x?.avatar||c.t.avatar,'av',c.caller));const g=gain(c);r.insertAdjacentHTML('beforeend',`<div><div style="font-weight:600">@${esc(c.caller)} · $${esc(c.asset)} ${c.side==='short'?'↓':'↑'}</div><div class="under" style="margin:0"><a href="${esc(c.t.url)}" target="_blank" rel="noopener">post ↗</a> · ${fmt(c.t.views)} views</div></div><div class="num pct ${g>=0?'up':'dn'}">${pct(g)}</div>`);el.appendChild(r)})}
+/* hero: cycle through live calls */
+let HI=0,HT;function hero(){const L=LIST.filter(c=>c.t?.exists);clearInterval(HT);if(!L.length)return;const show=()=>{const c=L[HI%L.length];const card=$('#ccard');card.classList.add('sw');setTimeout(()=>{$('#cav').innerHTML='';$('#cav').appendChild(avEl(c.x?.avatar||c.t.avatar,'av',c.caller).firstChild);$('#cnm').textContent=c.x?.name||c.caller;$('#ch').textContent='@'+c.caller+'  ·  '+fmt(c.x?.followers)+' followers  ·  incoming call';$('#ccall').textContent=(c.asset?'$'+c.asset+' ':'')+(c.side==='short'?'short':'long')+(c.p?.atPrice?' · from '+px(c.p.atPrice):'');$('#ctxt').textContent=c.t.text;const g=gain(c);$('#cstat').innerHTML=`since the call <span class="pct ${g==null?'':g>=0?'up':'dn'}">${pct(g)}</span> · ${fmt(c.t.views)} views · settles friday`;
+    $('#cdots').innerHTML=L.map((_,i)=>`<i class="${i===HI%L.length?'on':''}"></i>`).join('');card.classList.remove('sw')},420)};show();HT=setInterval(()=>{HI++;show()},6000)}
+/* launch */
+let LT=null,LX=null,LP=null,deb,SIDE='long';
+$('#lside').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$('#lside').children].forEach(x=>x.classList.toggle('on',x===b));SIDE=b.dataset.s;descr();priceIt()};
+$('#lp').addEventListener('input',()=>{clearTimeout(deb);const id=tid($('#lp').value);LT=null;LX=null;$('#lchk').textContent=id?'reading the post from X…':'Paste a post — we read it from X.';descr();if(!id)return;
+  deb=setTimeout(async()=>{const t=await readTweet(id);if(tid($('#lp').value)!==id)return;const e=$('#lchk');e.innerHTML='';if(t.exists===false){e.textContent='No such post on X.';return}if(t.exists==null){e.textContent='Could not read X right now — try again.';return}
+    LT=t;LX=await readHandle(t.author);e.appendChild(avEl(t.avatar,'av',t.author));e.insertAdjacentHTML('beforeend',`<div><div style="color:var(--ink);font-weight:600">${esc(t.name)}</div><div class="under" style="margin:0">@${esc(t.author)} · ${fmt(LX?.followers)} followers · ${fmt(t.views)} views</div><div class="under" style="margin:4px 0 0;font-family:Inter;font-size:13px;color:var(--mute)">${esc(t.text).slice(0,180)}</div></div>`);
+    const tk=tickerOf(t.text);if(tk&&!$('#la').dataset.touched)$('#la').value='$'+tk;const sd=sideOf(t.text);[...$('#lside').children].forEach(x=>x.classList.toggle('on',x.dataset.s===sd));SIDE=sd;descr();priceIt()},450)});
+$('#la').oninput=()=>{$('#la').dataset.touched=1;clearTimeout(deb);deb=setTimeout(()=>{descr();priceIt()},500)};
+async function priceIt(){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();LP=null;if(!a){$('#lprice').textContent='Price appears when the asset is known.';return}$('#lprice').textContent='pricing $'+a+'…';const p=await readPrice(a,LT?unix(LT.created):null);if($('#la').value.replace(/^\$/,'').trim().toUpperCase()!==a)return;if(p.price==null){$('#lprice').textContent='No market found for $'+a+'.';return}LP=p;const g=p.change==null?null:(SIDE==='short'?-p.change:p.change);
+  $('#lprice').innerHTML=`<div><div style="color:var(--ink);font-weight:600">${esc(p.name||a)} · ${px(p.price)}</div><div class="under" style="margin:0">${p.atPrice?'close on the day of the post '+px(p.atPrice)+' · since the call <span class="pct '+(g>=0?'up':'dn')+'">'+pct(g)+'</span>':'no daily history for this asset · scored from now'} · ${esc(p.src)}</div></div>`;descr()}
+function descr(){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();if(!LT||!a){$('#ldesc').textContent='—';return}const t=(a+(SIDE==='short'?'SHORT':'')).slice(0,10);
+  $('#ldesc').textContent=`$${t} — ${LT.name}'s call, as a coin.\n\n"${LT.text.replace(/\s+/g,' ').slice(0,120)}" — @${LT.author}, ${new Date(LT.created).toDateString()}. ${a} ${SIDE}${LP?.atPrice?' from '+px(LP.atPrice):''}.\n\nEvery trade pays 1%: 0.5% to the call vault, 0.2% to the launcher, 0.3% to Pons. Friday settles it — the week's best call pays its holders. Price read live.\n\ncall · every call is a coin · robinhood chain · post ${LT.url}`;
+  $('#tell').href='https://x.com/intent/post?in_reply_to='+LT.id+'&text='+encodeURIComponent(`your call is a coin now. $${t} on call — if you're right by Friday, holders get paid. `)+encodeURIComponent(location.origin)}
+$('#lcopy').onclick=()=>copy($('#ldesc').textContent);
+$('#ladd').onclick=async()=>{if(!LT)return toast('Paste a post first');const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase()||null;if(!a)return toast('Name the asset');const c=await addCall(LT.id,a,SIDE,'');if(c)location.hash='#calls'};
+$('#rgo').onclick=async()=>{const ca=$('#rca').value.trim().toLowerCase();if(!/^0x[0-9a-f]{40}$/.test(ca))return toast('Not an address');$('#rgo').textContent='reading…';const c=await readCoin(ca);$('#rgo').textContent='Check on chain';const e=$('#rout');
+  if(c.exists===false)return e.textContent='Not a token on Robinhood Chain.';if(c.exists==null)return e.textContent='Could not read the chain right now.';
+  e.innerHTML=`<div><div style="color:var(--ink);font-weight:600">${esc(c.name||'token')} ${c.symbol?'· $'+esc(c.symbol):''}</div><div class="under" style="margin:0">holders ${fmt(c.holders)} · mcap ${usd(c.marketCap)} · vol 24h ${usd(c.volume24)} · fee income 24h ${usd(c.feeIncome24)}</div></div>`;
+  if(LT){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase()||null;const ex=LIST.find(x=>x.post===LT.id);if(ex){ex.ca=ca;ex.coin=c;const l=local();const li=l.find(x=>x.post===LT.id);if(li)li.ca=ca;saveLocal(l);render();week()}else await addCall(LT.id,a,SIDE,ca)}};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+boot();
+</script>
+</body>
+</html>
