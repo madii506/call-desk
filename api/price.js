@@ -7,25 +7,41 @@ export default async function handler(req, res) {
   const sym = String(req.query.sym || '').replace(/^\$/, '').toUpperCase().trim();
   const at = Number(req.query.at || 0) || null;
   if (!/^[A-Z0-9.\-]{1,12}$/.test(sym)) return res.status(400).json({ error: 'bad symbol' });
+  let dbg = [];
   const UA = { 'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36', accept: 'application/json' };
-  const tryYahoo = async (y) => {
-    const r = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(y)}?range=3mo&interval=1d`, { headers: UA });
+  const tryYahoo = async (y, host = 'query2') => {
+    const r = await fetch(`https://${host}.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(y)}?range=3mo&interval=1d`, { headers: UA }); dbg.push(host + ':' + y + ':' + r.status);
     if (!r.ok) return null; const j = await r.json(); const c = j.chart?.result?.[0]; if (!c || !c.meta) return null;
     const ts = c.timestamp || []; const cl = c.indicators?.quote?.[0]?.close || [];
     let atPrice = null;
     if (at && ts.length) { let best = -1; for (let i = 0; i < ts.length; i++) if (ts[i] <= at && cl[i] != null) best = i; if (best < 0) for (let i = 0; i < ts.length; i++) if (cl[i] != null) { best = i; break; } atPrice = best >= 0 ? cl[best] : null; }
     const price = c.meta.regularMarketPrice ?? null;
     return { sym, yahoo: y, name: c.meta.longName || c.meta.shortName || y, price, currency: c.meta.currency || 'USD', atPrice, at,
-      change: (atPrice && price) ? +(((price / atPrice) - 1) * 100).toFixed(2) : null, exchange: c.meta.exchangeName || null, src: 'yahoo' };
+      exchange: c.meta.exchangeName || null, src: 'yahoo' };
   };
+  const pick = (ts, cl) => { let atPrice = null; if (at && ts.length) { let best = -1; for (let i = 0; i < ts.length; i++) if (ts[i] <= at && cl[i] != null) best = i; if (best < 0) for (let i = 0; i < ts.length; i++) if (cl[i] != null) { best = i; break; } atPrice = best >= 0 ? cl[best] : null; } return atPrice; };
+  const done = (o) => res.status(200).json({ ...o, change: (o.atPrice && o.price) ? +(((o.price / o.atPrice) - 1) * 100).toFixed(2) : null, dbg });
   try {
     const order = CRYPTO.has(sym) ? [`${sym}-USD`, sym] : [sym, `${sym}-USD`];
-    for (const y of order) { const out = await tryYahoo(y); if (out && out.price != null) return res.status(200).json(out); }
+    for (const host of ['query2', 'query1']) for (const y of order) { try { const out = await tryYahoo(y, host); if (out && out.price != null) return done(out); } catch (e) { dbg.push('yahoo:' + y + ':' + e.message); } }
   } catch (e) {}
+  // Stooq daily CSV (stocks): Date,Open,High,Low,Close,Volume
+  if (!CRYPTO.has(sym)) try {
+    const r = await fetch(`https://stooq.com/q/d/l/?s=${sym.toLowerCase()}.us&i=d`, { headers: UA }); dbg.push('stooq:' + r.status);
+    if (r.ok) { const rows = (await r.text()).trim().split('\n').slice(1).map(l => l.split(',')).filter(a => a.length >= 5 && a[4] !== 'N/D');
+      if (rows.length) { const ts = rows.map(a => Math.floor(Date.parse(a[0] + 'T21:00:00Z') / 1000)); const cl = rows.map(a => +a[4]);
+        return done({ sym, yahoo: null, name: sym, price: cl[cl.length - 1], currency: 'USD', atPrice: pick(ts, cl), at, exchange: 'stooq', src: 'stooq' }); } }
+  } catch (e) { dbg.push('stooq:' + e.message); }
+  // Coinbase daily candles (crypto): [time, low, high, open, close, volume], newest first
+  try {
+    const r = await fetch(`https://api.exchange.coinbase.com/products/${sym}-USD/candles?granularity=86400`, { headers: UA }); dbg.push('coinbase:' + r.status);
+    if (r.ok) { const c = (await r.json()); if (Array.isArray(c) && c.length) { c.sort((a, b) => a[0] - b[0]); const ts = c.map(a => a[0]); const cl = c.map(a => a[4]);
+      return done({ sym, yahoo: null, name: sym, price: cl[cl.length - 1], currency: 'USD', atPrice: pick(ts, cl), at, exchange: 'coinbase', src: 'coinbase' }); } }
+  } catch (e) { dbg.push('coinbase:' + e.message); }
   try {
     const r = await fetch(`https://api.dexscreener.com/latest/dex/search?q=${encodeURIComponent(sym)}`, { headers: { accept: 'application/json' } });
     if (r.ok) { const j = await r.json(); const ps = (j.pairs || []).filter(p => (p.baseToken?.symbol || '').toUpperCase() === sym).sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0));
-      const p = ps[0]; if (p) return res.status(200).json({ sym, yahoo: null, name: p.baseToken?.name, price: +p.priceUsd, currency: 'USD', atPrice: null, at, change: null, chain: p.chainId, chart: p.url, src: 'dexscreener' }); }
+      const p = ps[0]; if (p) return res.status(200).json({ sym, yahoo: null, name: p.baseToken?.name, price: +p.priceUsd, currency: 'USD', atPrice: null, at, change: null, chain: p.chainId, chart: p.url, src: 'dexscreener', dbg }); }
   } catch (e) {}
-  return res.status(200).json({ sym, price: null, exists: false, src: 'none' });
+  return res.status(200).json({ sym, price: null, exists: false, src: 'none', dbg });
 }
