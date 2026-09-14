@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CALL</title>
-<meta name="description" content="Every call is a coin. Turn any trade call posted on X into a coin on Robinhood Chain. Friday settles it: hits get paid from real trade fees.">
+<meta name="description" content="Every call is a coin. Give any creator on X a call and launch it as a coin on Robinhood Chain. The market scores it; the vault pays the winning call every hour.">
 <meta property="og:title" content="call — every call is a coin">
-<meta property="og:description" content="Turn any call on X into a coin. Friday settles it. Read live from X and the market.">
+<meta property="og:description" content="Give any creator on X a call. The market scores it. Paid every hour.">
 <meta property="og:image" content="/assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/assets/favicon-32.png"><link rel="apple-touch-icon" href="/assets/pfp.jpg">
@@ -23,7 +23,6 @@ section[id]{scroll-margin-top:24px}
 .navwrap{position:sticky;top:14px;z-index:50;display:flex;justify-content:center;padding:0 16px}
 .nav{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 40px rgba(0,0,0,.4)}
 .nav .brand{display:flex;align-items:center;gap:9px;margin-right:8px;font-family:"Instrument Serif",serif;font-style:italic;font-size:22px}
-.nav .brand img{width:24px;height:24px}
 .nav a.l{padding:7px 11px;border-radius:999px;color:var(--mute);font-size:14px}.nav a.l:hover{color:var(--ink);background:rgba(255,255,255,.05)}
 .nav .srch{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--mute);font-size:13px;margin-left:6px;background:rgba(0,0,0,.2)}
 .nav .srch input{background:none;border:0;outline:0;color:var(--ink);width:110px;font:inherit}.nav .srch kbd{font:11px JetBrains Mono,monospace;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
@@ -96,190 +95,190 @@ pre.desc{white-space:pre-wrap;font:13px/1.5 JetBrains Mono,monospace;background:
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--amb);color:#1a1000;padding:10px 16px;border-radius:999px;font-weight:600;transition:.25s;z-index:99;pointer-events:none}.toast.on{opacity:1;transform:translateX(-50%)}
 @media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:50px}.row{grid-template-columns:28px 1.4fr 1.2fr .9fr 100px}.row .c4,.row .c5{display:none}.week,.launch{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.nav .srch,.nav a.l.opt{display:none}}
 @media(max-width:560px){.row{grid-template-columns:24px 1.4fr 1fr 90px}.row .c3{display:none}.steps{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+
+/* flash card */
+.flash{position:fixed;right:18px;bottom:18px;z-index:60;width:min(340px,calc(100vw - 36px));border:1px solid rgba(255,184,64,.5);border-radius:18px;background:rgba(24,17,12,.96);box-shadow:0 20px 60px rgba(0,0,0,.55);padding:14px 16px;display:flex;gap:12px;align-items:center;transform:translateY(30px);opacity:0;transition:.45s cubic-bezier(.2,.7,.2,1);cursor:pointer}
+.flash.on{transform:none;opacity:1}.flash .av{width:52px;height:52px;border-radius:50%;flex:none;background:#2a1f16;box-shadow:0 0 0 2px var(--ink)}.flash .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.flash .nm{font-weight:700}.flash .h{font:12px JetBrains Mono,monospace;color:var(--mute)}.flash .go{margin-left:auto;font:12px JetBrains Mono,monospace;color:var(--amb);white-space:nowrap}
+.flash::before{content:"";position:absolute;inset:-1px;border-radius:18px;border:1px solid rgba(255,184,64,.6);animation:fl 2.4s ease-out infinite;pointer-events:none}@keyframes fl{to{transform:scale(1.08);opacity:0}}
+/* creator pick */
+.pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pc{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--card);cursor:pointer;transition:.2s}.pc:hover,.pc.on{border-color:var(--amb);background:rgba(255,184,64,.08)}
+.pc .av{width:38px;height:38px;border-radius:50%;flex:none;background:#2a1f16}.pc .av img{width:100%;height:100%;border-radius:50%;object-fit:cover}.pc .nm{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc .f{font:11px JetBrains Mono,monospace;color:var(--mute)}
+.hour{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.count{font:600 44px JetBrains Mono,monospace;color:var(--amb);letter-spacing:.02em}
+.kicker{font:12px JetBrains Mono,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:10px}
+.quote{font-family:"Instrument Serif",serif;font-style:italic;font-size:clamp(28px,4vw,46px);line-height:1.1;color:var(--ink);max-width:900px;margin:90px auto 0;text-align:center}
+.quote small{display:block;font:13px JetBrains Mono,monospace;color:var(--mute);margin-top:16px;font-style:normal}
+.srchrow{display:flex;gap:8px;align-items:center}.srchrow .in{min-width:220px}
+@media(max-width:900px){.hour{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="navwrap"><nav class="nav">
-  <a class="brand" href="#top"><img src="assets/pfp.jpg" alt="">call</a>
-  <a class="l" href="#calls">calls</a><a class="l" href="#week">the week</a><a class="l" href="#launch">launch</a><a class="l opt" href="#rule">rule</a><a class="l opt" href="#faq">faq</a>
-  <label class="srch"><span>Search</span><input id="q" placeholder="$TSLA / @handle" autocomplete="off"><kbd>/</kbd></label>
+  <a class="l" href="#give">give a call</a><a class="l" href="#calls">the board</a><a class="l" href="#hour">every hour</a><a class="l opt" href="#how">how</a><a class="l opt" href="#faq">faq</a>
   <a class="btn fill sm" href="docs.html">docs ↗</a>
 </nav></div>
 
 <main class="wrap" id="top">
 <section class="hero">
   <div>
+    <div class="kicker">● live · robinhood chain · pays every hour</div>
     <h1>Every call<br>is a <em>coin.</em></h1>
-    <p class="lead">Someone on X posts a call — "$TSLA long", "$SOL 300 by Friday". Paste the post, launch its coin on Robinhood Chain. Every trade pays the call vault. Friday settles it: if the call hit, its holders get paid. Post, price and result are read live. No invented numbers.</p>
-    <div class="cta"><a class="btn fill" href="#launch">Turn a call into a coin</a><a class="btn line" href="#calls">See the board</a></div>
+    <p class="lead">Give any creator on X a call — "$TSLA long", "$SOL to 300" — and launch it as a coin. Every trade pays the vault. Every hour, the vault pays the holders of the call that's winning, and the caller's X handle gets their cut. Price, post and payout are all read live. Nothing here is typed in.</p>
+    <div class="cta"><a class="btn fill" href="#give">Give someone a call</a><a class="btn line" href="#calls">See who's winning</a></div>
   </div>
   <div class="incoming"><i class="ring"></i><i class="ring"></i><i class="ring"></i>
     <div class="ccard" id="ccard">
       <div class="dots" id="cdots"></div>
-      <div class="top"><div class="av" id="cav"></div><div><div class="nm" id="cnm">No call registered yet</div><div class="h" id="ch">the first one opens the board</div></div></div>
-      <div class="call" id="ccall">Paste a call from X</div>
-      <p class="txt" id="ctxt">The post is read live from X, the asset price from the market, and the result is scored on Friday.</p>
-      <div class="bot"><button class="rb ok" title="hit">✓</button><button class="rb no" title="miss">✕</button><span class="stat" id="cstat">holders decide · settles friday</span></div>
+      <div class="top"><div class="av" id="cav"></div><div><div class="nm" id="cnm">Ringing…</div><div class="h" id="ch">reading the board</div></div></div>
+      <div class="call" id="ccall">Pick up.</div>
+      <p class="txt" id="ctxt">The first call on the board rings here.</p>
+      <div class="bot"><button class="rb ok" title="hit">✓</button><button class="rb no" title="miss">✕</button><span class="stat" id="cstat">every hour · holders get paid</span></div>
     </div>
   </div>
 </section>
 
 <div class="wall"><div class="track" id="track"></div></div>
 
+<section id="give">
+  <div class="sh rv"><div><div class="kicker">step one</div><h2>Give someone a <em>call.</em></h2><p class="sub">Pick a creator, name the asset, choose a direction. If they already posted the call, paste the post — it becomes the receipt. Price is read the second you register.</p></div></div>
+  <div class="launch rv">
+    <div class="card">
+      <div class="field"><label>the creator · any handle on X</label><input class="in" id="lh" placeholder="@handle" autocomplete="off"></div>
+      <div class="chk" id="lchk">Type a handle or tap one below — we read it from X.</div>
+      <div class="pick" id="pick" style="margin:12px 0 14px"></div>
+      <div class="two"><div class="field"><label>the call · asset</label><input class="in" id="la" placeholder="$TSLA"></div><div class="field"><label>direction</label><div class="seg" id="lside"><button class="on" data-s="long">long ↑</button><button data-s="short">short ↓</button></div></div></div>
+      <div class="chk" id="lprice">Price appears when the asset is known.</div>
+      <div class="field" style="margin-top:14px"><label>their post · optional receipt</label><input class="in" id="lp" placeholder="https://x.com/…/status/…" autocomplete="off"></div>
+      <div class="chk" id="lpost" hidden></div>
+      <div class="cta" style="margin-top:14px"><button class="btn fill" id="ladd">Put the call on the board</button></div>
+    </div>
+    <div class="card">
+      <div class="kicker">step two</div>
+      <h3>Launch it on Pons</h3><p>Copy the description, set the call vault as the fee recipient, launch. 1% per trade: 0.5% vault · 0.2% you · 0.3% Pons.</p>
+      <pre class="desc" id="ldesc">— pick a creator and an asset first —</pre>
+      <div class="cta"><button class="btn line" id="lcopy">Copy description</button><a class="btn fill" href="https://ponsvault.com/launch" target="_blank" rel="noopener">Open Pons ↗</a></div>
+      <h3 style="margin-top:26px">Already launched?</h3>
+      <div class="srchrow"><input class="in" id="rca" placeholder="0x… contract address"><button class="btn line" id="rgo">Check</button></div>
+      <div class="chk" id="rout" style="margin-top:10px">Reads Blockscout + Dexscreener.</div>
+      <h3 style="margin-top:26px">Tell them</h3><p>They can't stop the coin. They can claim the caller's share by replying with their claim code — it's in docs.</p>
+      <a class="btn line" id="tell" href="#" target="_blank" rel="noopener">Post on X ↗</a>
+    </div>
+  </div>
+</section>
+
 <section id="calls">
-  <div class="sh rv"><div><h2>The <em>board.</em></h2><p class="sub">Each row is a real post on X. Since-call % is the asset's price now versus its close on the day of the post (Yahoo Finance). Views come from X, market cap from Dexscreener.</p></div>
-  <div class="tabs" id="tabs"><button class="tab on" data-k="live">live</button><button class="tab" data-k="pct">since call</button><button class="tab" data-k="views">views</button><button class="tab" data-k="coin">with a coin<span class="n" id="ncoin">0</span></button></div></div>
+  <div class="sh rv"><div><div class="kicker">live</div><h2>Who's <em>winning.</em></h2><p class="sub">Every row is a real creator and a real price. "Since call" is the asset now versus when the call went on the board.</p></div>
+  <div class="srchrow"><input class="in" id="q" placeholder="search · $TSLA / @handle"><div class="tabs" id="tabs"><button class="tab on" data-k="pct">by gain</button><button class="tab" data-k="live">newest</button><button class="tab" data-k="coin">with a coin<span class="n" id="ncoin">0</span></button></div></div></div>
   <div class="board rv">
-    <div class="row head"><span>#</span><span>caller</span><span>call</span><span class="c3">since call</span><span class="c4">views</span><span class="c5">market cap</span><span>status</span></div>
+    <div class="row head"><span>#</span><span>caller</span><span>call</span><span class="c3">since call</span><span class="c4">followers</span><span class="c5">market cap</span><span>status</span></div>
     <div id="rows"></div>
   </div>
 </section>
 
-<section id="week">
-  <div class="sh rv"><div><h2>The <em>week.</em></h2><p class="sub">Every call coin's fee income lands in one vault. Friday 20:00 UTC the week's best call — largest gain in its direction — pays its holders, pro rata.</p></div></div>
-  <div class="week rv">
-    <div class="card"><h3>Vault</h3><p>Fee income collected this week from every call coin.</p><div class="big" id="vault">—<small id="vaultsub">no call coin on chain yet · the vault starts at the first launch</small></div><div class="bar"><i id="wbar"></i></div><div class="under" id="wleft"></div></div>
-    <div class="card"><h3>Best call right now</h3><p>Registered calls ranked by gain in their direction.</p><div class="race" id="race"><div class="empty" style="border:0;padding:8px 0">No call registered yet.</div></div></div>
+<section id="hour">
+  <div class="sh rv"><div><div class="kicker">the clock</div><h2>Paid every <em>hour.</em></h2><p class="sub">All call coins feed one vault. On the hour, the vault pays the holders of the call with the biggest gain in its direction, and the caller's handle can claim their share.</p></div></div>
+  <div class="hour rv">
+    <div class="card"><h3>Next payout</h3><p>UTC, on the hour.</p><div class="count" id="count">--:--</div><div class="bar"><i id="hbar"></i></div><div class="under" id="hsub"></div></div>
+    <div class="card"><h3>Vault</h3><p>Fee income today across every call coin.</p><div class="big" id="vault">—<small id="vaultsub">no call coin on chain yet · the vault starts at the first launch</small></div></div>
+    <div class="card"><h3>Leading</h3><p>The call that gets paid if the hour ended now.</p><div class="race" id="race"><div class="empty" style="border:0;padding:8px 0">Nobody yet. Give someone a call.</div></div></div>
   </div>
 </section>
 
-<section id="launch">
-  <div class="sh rv"><div><h2>Turn a call into a <em>coin.</em></h2><p class="sub">Paste the post. We read it from X, pull the ticker out of the text, price it live, and write the Pons description.</p></div></div>
-  <div class="launch rv">
-    <div class="card">
-      <div class="field"><label>the call · x.com post URL or id</label><input class="in" id="lp" placeholder="https://x.com/blknoiz06/status/…" autocomplete="off"></div>
-      <div class="chk" id="lchk">Paste a post — we read it from X.</div>
-      <div class="two" style="margin-top:14px"><div class="field"><label>asset</label><input class="in" id="la" placeholder="$TSLA"></div><div class="field"><label>direction</label><div class="seg" id="lside"><button class="on" data-s="long">long ↑</button><button data-s="short">short ↓</button></div></div></div>
-      <div class="chk" id="lprice">Price appears when the asset is known.</div>
-      <div class="field" style="margin-top:14px"><label>fee split · 1% per trade</label><div class="fees"><div class="a">0.5% · call vault</div><div class="b">0.2% · launcher</div><div class="c">0.3% · pons</div></div></div>
-      <div class="field"><label>pons description</label><pre class="desc" id="ldesc">—</pre></div>
-      <div class="cta"><button class="btn fill" id="ladd">Add the call to the board</button><button class="btn line" id="lcopy">Copy description</button><a class="btn line" href="https://ponsvault.com/launch" target="_blank" rel="noopener">Open Pons ↗</a></div>
-      <div class="under">Set the creator fee recipient to the call vault address (in docs once it is on chain). Pons gives the launcher no allocation — buy on the curve in the launch tx if you want a reserve.</div>
-    </div>
-    <div class="card">
-      <h3>Already launched?</h3><p>Paste the contract address. We read it from Blockscout and Dexscreener and add the call to the board.</p>
-      <div class="field"><input class="in" id="rca" placeholder="0x…"></div>
-      <div class="cta"><button class="btn line" id="rgo">Check on chain</button></div>
-      <div class="chk" id="rout" style="margin-top:14px">Nothing checked yet.</div>
-      <div class="under" style="margin-top:18px">Verified coins are added to calls.json by hand within the hour. Until then the call lives in this browser only.</div>
-      <h3 style="margin-top:26px">Tell the caller</h3><p>One reply, from you, under their post. They can't stop the coin; they can claim the launcher share by replying with the code in docs.</p>
-      <a class="btn line" id="tell" href="#" target="_blank" rel="noopener">Reply on X ↗</a>
-    </div>
-  </div>
-</section>
+<p class="quote rv">"Put your mouth where the money is."<small>every call is a coin · the market keeps score · the vault pays on the hour</small></p>
 
-<section id="rule">
+<section id="how">
   <div class="sh rv"><div><h2>How it <em>works.</em></h2></div></div>
   <div class="steps rv">
-    <div class="step"><h4>Paste a call</h4><p>Any post on X that names a ticker. We read the post, the author and the view count live.</p></div>
+    <div class="step"><h4>Give a call</h4><p>Pick a creator on X, name the asset and the direction. Paste their post if they made the call themselves.</p></div>
     <div class="step"><h4>Launch on Pons</h4><p>Bonding curve → Uniswap v4, liquidity locked by the PONS hook. The vault is the fee recipient.</p></div>
-    <div class="step"><h4>Price it</h4><p>Close on the day of the post vs price now, from Yahoo Finance. Direction decides the sign.</p></div>
-    <div class="step"><h4>Friday settles</h4><p>The best call of the week pays its holders from the vault. Pro rata, on chain, in USDG.</p></div>
-  </div>
-  <div class="rule rv">
-    <ol>
-      <li><b>I</b><p>One coin per post. The first launch on a post is the coin; later ones are not listed.</p></li>
-      <li><b>II</b><p>Prices are read from the market, never entered. A deleted post scores zero.</p></li>
-      <li><b>III</b><p>The vault only holds fee income. It never buys, never sells, never holds coins.</p></li>
-      <li><b>IV</b><p>The caller can claim the launcher share any time by replying with their claim code. Until then it accrues to the vault.</p></li>
-    </ol>
+    <div class="step"><h4>The market scores it</h4><p>Price at the call vs price now, read live. Longs want up, shorts want down.</p></div>
+    <div class="step"><h4>Every hour, payday</h4><p>The winning call's holders get the vault, pro rata, in USDG. The caller's handle claims their cut.</p></div>
   </div>
 </section>
 
 <section id="faq">
   <div class="sh rv"><div><h2>Questions, <em>answered.</em></h2></div></div>
   <div class="faq rv">
-    <details open><summary>What counts as a call?</summary><p>Any public post on X that names a ticker — a stock or a coin — with a direction. "$TSLA long", "$SOL 300", "short this". You pick the asset and the direction when you register; the post is the receipt.</p></details>
-    <details><summary>How is "since call" computed?</summary><p>The asset's close on the day the post was published versus its price right now, both from Yahoo Finance, sign flipped for shorts. Memecoins with no history show price now only.</p></details>
-    <details><summary>Does the caller have to agree?</summary><p>No. It's a coin about a public call. The caller can claim the launcher's share any time by replying with their claim code, and profit from being right.</p></details>
+    <details open><summary>What is a call?</summary><p>A creator, an asset and a direction. "@blknoiz06 · $TSLA · long." If they posted it themselves, paste the post and it's the receipt; if not, you're giving them the call.</p></details>
+    <details><summary>How is "since call" computed?</summary><p>The asset's price when the call went on the board versus its price right now, read live from the market (Coinbase for crypto, Yahoo / Stooq for stocks, Dexscreener for on-chain tokens). Sign flipped for shorts.</p></details>
+    <details><summary>Who gets paid, and when?</summary><p>On every hour, UTC. The holders of the call coin with the largest gain in its direction split the vault pro rata. The caller's X handle can claim their share any time with their claim code.</p></details>
+    <details><summary>Does the creator have to agree?</summary><p>No. It's a coin about a public call. They can claim their cut, they can't stop it, and they profit from being right.</p></details>
     <details><summary>Where does the money come from?</summary><p>Only from the 1% trade fee on Pons. 0.5% to the vault, 0.2% to the launcher, 0.3% to Pons. No emissions, no treasury, no promises.</p></details>
-    <details><summary>Who gets paid?</summary><p>Friday 20:00 UTC, the holders of the call coin with the largest gain in its direction that week — pro rata by balance at the snapshot, in USDG.</p></details>
     <details><summary>Is the vault live?</summary><p>Not yet. The vault address is published in docs the moment it's on chain, with the payout tx list under it.</p></details>
   </div>
 </section>
 <div style="height:60px"></div>
 </main>
 <div class="toast" id="toast"></div>
+<div class="flash" id="flash" hidden><div class="av" id="fav"></div><div><div class="nm" id="fnm"></div><div class="h" id="fh"></div></div><div class="go">give a call →</div></div>
 
 <script>
 const $=s=>document.querySelector(s);
 const fmt=n=>n==null?'—':n>=1e9?(n/1e9).toFixed(2)+'B':n>=1e6?(n/1e6).toFixed(n>=1e7?1:2)+'M':n>=1e3?(n/1e3).toFixed(n>=1e5?0:1)+'K':String(n);
-const usd=n=>n==null?'—':'$'+fmt(Math.round(n));
-const px=n=>n==null?'—':'$'+(n>=100?n.toFixed(2):n>=1?n.toFixed(3):n.toPrecision(3));
-const pct=n=>n==null?'—':(n>=0?'+':'')+n.toFixed(2)+'%';
+const usd=n=>n==null?'—':'$'+fmt(Math.round(n));const px=n=>n==null?'—':'$'+(n>=100?n.toFixed(2):n>=1?n.toFixed(3):n.toPrecision(3));const pct=n=>n==null?'—':(n>=0?'+':'')+n.toFixed(2)+'%';
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const SIL='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#2a1f16"/><circle cx="50" cy="38" r="18" fill="#5a4530"/><path d="M14 100c4-24 18-36 36-36s32 12 36 36z" fill="#5a4530"/></svg>');
 const avEl=(src,cls='av',h)=>{const d=document.createElement('div');d.className=cls;const i=new Image();i.referrerPolicy='no-referrer';i.decoding='async';let step=0;i.onload=()=>i.classList.add('ok');i.onerror=()=>{step++;if(step===1&&h)i.src='/api/avatar?h='+encodeURIComponent(h);else i.src=SIL};i.src=src||(h?'/api/avatar?h='+encodeURIComponent(h):SIL);d.appendChild(i);return d};
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1800)};
 const copy=async t=>{try{await navigator.clipboard.writeText(t);toast('Copied')}catch(e){prompt('Copy:',t)}};
 const cache={};const J=async(u)=>{if(cache[u])return cache[u];try{const r=await fetch(u);const j=await r.json();if(j&&!j.error)cache[u]=j;return j}catch(e){return {exists:null}}};
-const readTweet=id=>J('/api/tweet?id='+encodeURIComponent(id));
-const readHandle=h=>J('/api/handle?h='+encodeURIComponent(h));
-const readPrice=(s,at)=>J('/api/price?sym='+encodeURIComponent(s)+(at?'&at='+at:''));
+const readTweet=id=>J('/api/tweet?id='+encodeURIComponent(id));const readHandle=h=>J('/api/handle?h='+encodeURIComponent(h));const readPrice=(s,at)=>J('/api/price?sym='+encodeURIComponent(s)+(at?'&at='+at:''));
 async function readCoin(ca){let j=await J('/api/coin?ca='+ca);if(!j||j.holders==null){j=j||{ca,exists:null};for(let k=0;k<2&&j.holders==null;k++){try{const r=await fetch('https://robinhoodchain.blockscout.com/api/v2/tokens/'+ca,{headers:{accept:'application/json'}});if(r.ok){const b=await r.json();j.exists=true;j.holders=b.holders_count!=null?+b.holders_count:null;j.name=j.name||b.name;j.symbol=j.symbol||b.symbol}else if(r.status===404&&j.exists!==true)j.exists=false}catch(e){}}}return j}
 const tid=s=>{s=String(s||'').trim();const m=s.match(/status\/(\d{1,25})/);return m?m[1]:(/^\d{1,25}$/.test(s)?s:null)};
-const tickerOf=t=>{const m=(t||'').match(/\$([A-Za-z]{1,10})\b/);return m?m[1].toUpperCase():null};
-const sideOf=t=>/\b(short|dump|down|sell|fade)\b/i.test(t||'')?'short':'long';
+const tickerOf=t=>{const m=(t||'').match(/\$([A-Za-z]{1,10})\b/);return m?m[1].toUpperCase():null};const sideOf=t=>/\b(short|dump|down|sell|fade)\b/i.test(t||'')?'short':'long';
 const unix=d=>Math.floor(new Date(d).getTime()/1000);
-const gain=c=>{if(!c.p||c.p.change==null)return null;return c.side==='short'?-c.p.change:c.p.change};
-const local=()=>{try{return JSON.parse(localStorage.getItem('call.local')||'[]')}catch(e){return []}};
-const saveLocal=l=>{try{localStorage.setItem('call.local',JSON.stringify(l))}catch(e){}};
-
-let LIST=[],SORT='live';
-async function enrich(c){c.t=await readTweet(c.post);if(c.t?.exists){c.asset=c.asset||tickerOf(c.t.text);c.side=c.side||sideOf(c.t.text);c.caller=c.caller||c.t.author;c.x=await readHandle(c.caller);if(c.asset)c.p=await readPrice(c.asset,unix(c.t.created))}if(c.ca)c.coin=await readCoin(c.ca);return c}
+const gain=c=>{if(!c.p||c.p.price==null)return null;const base=c.p.atPrice??c.atPrice;if(!base)return null;const ch=(c.p.price/base-1)*100;return c.side==='short'?-ch:ch};
+const local=()=>{try{return JSON.parse(localStorage.getItem('call.local')||'[]')}catch(e){return []}};const saveLocal=l=>{try{localStorage.setItem('call.local',JSON.stringify(l))}catch(e){}};
+let LIST=[],CREATORS=[],SORT='pct';
+async function enrich(c){c.x=await readHandle(c.caller);if(c.post){c.t=await readTweet(c.post)}if(c.asset)c.p=await readPrice(c.asset,c.at||(c.t?unix(c.t.created):null));if(c.ca)c.coin=await readCoin(c.ca);return c}
 async function boot(){
-  let reg={calls:[]};try{reg=await (await fetch('calls.json?'+Date.now())).json()}catch(e){}
-  const seen=new Set();LIST=[...reg.calls,...local()].filter(c=>c.post&&!seen.has(c.post)&&seen.add(c.post)).map(c=>({...c}));
-  render();await Promise.all(LIST.map(enrich));render();wall();week();hero();
+  let reg={calls:[]},cr={creators:[]};try{[reg,cr]=await Promise.all([fetch('calls.json?'+Date.now()).then(r=>r.json()),fetch('creators.json?'+Date.now()).then(r=>r.json())])}catch(e){}
+  const seen=new Set();LIST=[...reg.calls,...local()].filter(c=>c.caller&&c.asset).filter(c=>{const k=(c.caller+':'+c.asset+':'+c.side).toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).map(c=>({...c}));
+  CREATORS=cr.creators.map(h=>({handle:h}));render();
+  await Promise.all([...LIST.map(enrich),...CREATORS.map(async c=>{c.x=await readHandle(c.handle)})]);
+  CREATORS=CREATORS.filter(c=>c.x?.exists);render();wall();pick();hour();hero();flash();
 }
-function status(c){if(!c.t)return '<span class="st">…</span>';if(c.t.exists===false)return '<span class="st">post deleted</span>';const g=gain(c);const settled=c.settled;if(settled)return g>=0?'<span class="st hit">hit</span>':'<span class="st miss">miss</span>';return '<span class="st live"><b></b>live</span>'}
+function status(c){if(!c.p)return '<span class="st">…</span>';const g=gain(c);if(g==null)return '<span class="st">no price</span>';return '<span class="st live"><b></b>live</span>'}
 function render(){
-  const rows=$('#rows');rows.innerHTML='';let L=LIST.filter(c=>c.t?.exists!==false);
-  if(SORT==='coin')L=L.filter(c=>c.ca);
-  const key={live:c=>unix(c.t?.created||0),pct:c=>gain(c)??-1e9,views:c=>c.t?.views||0,coin:c=>c.coin?.marketCap||0}[SORT];L.sort((a,b)=>key(b)-key(a));
-  $('#ncoin').textContent=LIST.filter(c=>c.ca).length;
-  if(!L.length){rows.innerHTML='<div class="empty">No call on the board yet. Register the first one in <a href="#launch" style="color:var(--amb)">Turn a call into a coin</a>.</div>';return}
-  L.forEach((c,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML=`<span class="rk">${i+1}</span>`;
-    const who=document.createElement('div');who.className='who';who.appendChild(avEl(c.x?.avatar||c.t?.avatar,'av',c.caller));
-    const t=document.createElement('div');t.innerHTML=`<div class="nm">${esc(c.x?.name||c.caller||'…')}</div><div class="h"><a href="${esc(c.t?.url||('https://x.com/'+c.caller))}" target="_blank" rel="noopener">@${esc(c.caller||'')} · post ↗</a></div>`;who.appendChild(t);r.appendChild(who);
-    const g=gain(c);
-    r.insertAdjacentHTML('beforeend',`<span class="cl">${c.asset?'$'+esc(c.asset):'—'} ${c.side==='short'?'↓':'↑'}<small>${c.p?px(c.p.atPrice)+' → '+px(c.p.price):'…'}</small></span><span class="num c3 pct ${g==null?'dim':g>=0?'up':'dn'}">${pct(g)}</span><span class="num c4 ${c.t?.views?'':'dim'}">${fmt(c.t?.views)}</span><span class="num c5 ${c.coin?.marketCap?'':'dim'}">${c.coin?usd(c.coin.marketCap):'—'}</span><span>${status(c)}</span>`);
-    rows.appendChild(r)});
+  const rows=$('#rows');rows.innerHTML='';let L=LIST.filter(c=>c.x?.exists!==false);if(SORT==='coin')L=L.filter(c=>c.ca);
+  const key={pct:c=>gain(c)??-1e9,live:c=>c.at||0,coin:c=>c.coin?.marketCap||0}[SORT];L.sort((a,b)=>key(b)-key(a));$('#ncoin').textContent=LIST.filter(c=>c.ca).length;
+  if(!L.length){rows.innerHTML='<div class="empty">Nobody has been called yet. <a href="#give" style="color:var(--amb)">Give someone a call</a> — it takes ten seconds.</div>';return}
+  L.forEach((c,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML=`<span class="rk">${i+1}</span>`;const who=document.createElement('div');who.className='who';who.appendChild(avEl(c.x?.avatar,'av',c.caller));
+    const t=document.createElement('div');t.innerHTML=`<div class="nm">${esc(c.x?.name||c.caller)}</div><div class="h"><a href="${esc(c.t?.url||('https://x.com/'+c.caller))}" target="_blank" rel="noopener">@${esc(c.caller)}${c.t?' · post ↗':''}</a></div>`;who.appendChild(t);r.appendChild(who);const g=gain(c);
+    r.insertAdjacentHTML('beforeend',`<span class="cl">$${esc(c.asset)} ${c.side==='short'?'↓':'↑'}<small>${c.p?px(c.p.atPrice??c.atPrice)+' → '+px(c.p.price):'…'}</small></span><span class="num c3 pct ${g==null?'dim':g>=0?'up':'dn'}">${pct(g)}</span><span class="num c4">${fmt(c.x?.followers)}</span><span class="num c5 ${c.coin?.marketCap?'':'dim'}">${c.coin?usd(c.coin.marketCap):'—'}</span><span>${status(c)}</span>`);rows.appendChild(r)});
 }
 $('#tabs').onclick=e=>{const b=e.target.closest('.tab');if(!b)return;[...$('#tabs').children].forEach(x=>x.classList.toggle('on',x===b));SORT=b.dataset.k;render()};
 $('#q').oninput=e=>{const v=e.target.value.toLowerCase().replace(/^[@$]/,'');[...$('#rows').children].forEach(r=>{r.hidden=v&&!r.textContent.toLowerCase().includes(v)})};
-document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('#q').focus()}});
-async function addCall(id,asset,side,ca){if(LIST.some(c=>c.post===id))return toast('Already on the board');const c={post:id,asset:asset||null,side:side||null,ca:ca||'',caller:null};await enrich(c);if(c.t?.exists===false)return toast('No such post on X');if(c.t?.exists==null)return toast('Could not read X right now');
-  LIST.push(c);const l=local();l.push({post:id,asset:c.asset,side:c.side,ca:c.ca,caller:c.caller});saveLocal(l);render();wall();week();hero();toast('Added · @'+c.caller+(c.asset?' · $'+c.asset:''));return c}
-function wall(){const tr=$('#track');tr.innerHTML='';const L=LIST.filter(c=>c.t?.exists);if(!L.length){tr.innerHTML='<span class="chip"><span class="f">no calls yet · paste the first one</span></span>'.repeat(6);return}
-  const mk=c=>{const d=document.createElement('a');d.className='chip';d.href=c.t.url;d.target='_blank';d.rel='noopener';d.appendChild(avEl(c.x?.avatar||c.t.avatar,'av',c.caller));const g=gain(c);d.insertAdjacentHTML('beforeend',`<span>@${esc(c.caller)} · $${esc(c.asset||'?')} ${c.side==='short'?'↓':'↑'}</span><span class="f ${g==null?'':g>=0?'up':'dn'}" style="color:${g==null?'':g>=0?'var(--grn)':'var(--red)'}">${pct(g)}</span>`);return d};[...L,...L,...L].forEach(c=>tr.appendChild(mk(c)))}
-function week(){const inc=LIST.reduce((a,c)=>a+(c.coin?.feeIncome24||0),0);const has=LIST.some(c=>c.coin?.volume24!=null);
-  $('#vault').firstChild.textContent=has?usd(inc*7)+' ':'— ';$('#vaultsub').textContent=has?'≈ 7 × today\'s fee income across every call coin (Dexscreener h24 × 0.7%)':'no call coin on chain yet · the vault starts at the first launch';
-  const now=new Date();const day=(now.getUTCDay()+2)%7;const p=Math.min(1,(day*24+now.getUTCHours()-20+24)%168/168);$('#wbar').style.width=(p*100).toFixed(1)+'%';$('#wleft').textContent=`week ${Math.round(p*100)}% through · settles Friday 20:00 UTC`;
-  const R=LIST.filter(c=>gain(c)!=null).sort((a,b)=>gain(b)-gain(a));const el=$('#race');if(!R.length)return;el.innerHTML='';
-  R.slice(0,6).forEach(c=>{const r=document.createElement('div');r.className='r';r.appendChild(avEl(c.x?.avatar||c.t.avatar,'av',c.caller));const g=gain(c);r.insertAdjacentHTML('beforeend',`<div><div style="font-weight:600">@${esc(c.caller)} · $${esc(c.asset)} ${c.side==='short'?'↓':'↑'}</div><div class="under" style="margin:0"><a href="${esc(c.t.url)}" target="_blank" rel="noopener">post ↗</a> · ${fmt(c.t.views)} views</div></div><div class="num pct ${g>=0?'up':'dn'}">${pct(g)}</div>`);el.appendChild(r)})}
-/* hero: cycle through live calls */
-let HI=0,HT;function hero(){const L=LIST.filter(c=>c.t?.exists);clearInterval(HT);if(!L.length)return;const show=()=>{const c=L[HI%L.length];const card=$('#ccard');card.classList.add('sw');setTimeout(()=>{$('#cav').innerHTML='';$('#cav').appendChild(avEl(c.x?.avatar||c.t.avatar,'av',c.caller).firstChild);$('#cnm').textContent=c.x?.name||c.caller;$('#ch').textContent='@'+c.caller+'  ·  '+fmt(c.x?.followers)+' followers  ·  incoming call';$('#ccall').textContent=(c.asset?'$'+c.asset+' ':'')+(c.side==='short'?'short':'long')+(c.p?.atPrice?' · from '+px(c.p.atPrice):'');$('#ctxt').textContent=c.t.text;const g=gain(c);$('#cstat').innerHTML=`since the call <span class="pct ${g==null?'':g>=0?'up':'dn'}">${pct(g)}</span> · ${fmt(c.t.views)} views · settles friday`;
-    $('#cdots').innerHTML=L.map((_,i)=>`<i class="${i===HI%L.length?'on':''}"></i>`).join('');card.classList.remove('sw')},420)};show();HT=setInterval(()=>{HI++;show()},6000)}
-/* launch */
-let LT=null,LX=null,LP=null,deb,SIDE='long';
-$('#lside').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$('#lside').children].forEach(x=>x.classList.toggle('on',x===b));SIDE=b.dataset.s;descr();priceIt()};
-$('#lp').addEventListener('input',()=>{clearTimeout(deb);const id=tid($('#lp').value);LT=null;LX=null;$('#lchk').textContent=id?'reading the post from X…':'Paste a post — we read it from X.';descr();if(!id)return;
-  deb=setTimeout(async()=>{const t=await readTweet(id);if(tid($('#lp').value)!==id)return;const e=$('#lchk');e.innerHTML='';if(t.exists===false){e.textContent='No such post on X.';return}if(t.exists==null){e.textContent='Could not read X right now — try again.';return}
-    LT=t;LX=await readHandle(t.author);e.appendChild(avEl(t.avatar,'av',t.author));e.insertAdjacentHTML('beforeend',`<div><div style="color:var(--ink);font-weight:600">${esc(t.name)}</div><div class="under" style="margin:0">@${esc(t.author)} · ${fmt(LX?.followers)} followers · ${fmt(t.views)} views</div><div class="under" style="margin:4px 0 0;font-family:Inter;font-size:13px;color:var(--mute)">${esc(t.text).slice(0,180)}</div></div>`);
-    const tk=tickerOf(t.text);if(tk&&!$('#la').dataset.touched)$('#la').value='$'+tk;const sd=sideOf(t.text);[...$('#lside').children].forEach(x=>x.classList.toggle('on',x.dataset.s===sd));SIDE=sd;descr();priceIt()},450)});
-$('#la').oninput=()=>{$('#la').dataset.touched=1;clearTimeout(deb);deb=setTimeout(()=>{descr();priceIt()},500)};
-async function priceIt(){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();LP=null;if(!a){$('#lprice').textContent='Price appears when the asset is known.';return}$('#lprice').textContent='pricing $'+a+'…';const p=await readPrice(a,LT?unix(LT.created):null);if($('#la').value.replace(/^\$/,'').trim().toUpperCase()!==a)return;if(p.price==null){$('#lprice').textContent='No market found for $'+a+'.';return}LP=p;const g=p.change==null?null:(SIDE==='short'?-p.change:p.change);
-  $('#lprice').innerHTML=`<div><div style="color:var(--ink);font-weight:600">${esc(p.name||a)} · ${px(p.price)}</div><div class="under" style="margin:0">${p.atPrice?'close on the day of the post '+px(p.atPrice)+' · since the call <span class="pct '+(g>=0?'up':'dn')+'">'+pct(g)+'</span>':'no daily history for this asset · scored from now'} · ${esc(p.src)}</div></div>`;descr()}
-function descr(){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();if(!LT||!a){$('#ldesc').textContent='—';return}const t=(a+(SIDE==='short'?'SHORT':'')).slice(0,10);
-  $('#ldesc').textContent=`$${t} — ${LT.name}'s call, as a coin.\n\n"${LT.text.replace(/\s+/g,' ').slice(0,120)}" — @${LT.author}, ${new Date(LT.created).toDateString()}. ${a} ${SIDE}${LP?.atPrice?' from '+px(LP.atPrice):''}.\n\nEvery trade pays 1%: 0.5% to the call vault, 0.2% to the launcher, 0.3% to Pons. Friday settles it — the week's best call pays its holders. Price read live.\n\ncall · every call is a coin · robinhood chain · post ${LT.url}`;
-  $('#tell').href='https://x.com/intent/post?in_reply_to='+LT.id+'&text='+encodeURIComponent(`your call is a coin now. $${t} on call — if you're right by Friday, holders get paid. `)+encodeURIComponent(location.origin)}
+function wall(){const tr=$('#track');tr.innerHTML='';const L=CREATORS;if(!L.length)return;const mk=c=>{const d=document.createElement('a');d.className='chip';d.href='#give';d.onclick=()=>pickH(c.handle);d.appendChild(avEl(c.x.avatar,'av',c.handle));d.insertAdjacentHTML('beforeend',`<span>@${esc(c.handle)}</span><span class="f">${fmt(c.x.followers)} · call →</span>`);return d};[...L,...L].forEach(c=>tr.appendChild(mk(c)))}
+function pick(){const el=$('#pick');el.innerHTML='';CREATORS.slice(0,12).forEach(c=>{const d=document.createElement('div');d.className='pc';d.dataset.h=c.handle.toLowerCase();d.onclick=()=>pickH(c.handle);d.appendChild(avEl(c.x.avatar,'av',c.handle));d.insertAdjacentHTML('beforeend',`<div><div class="nm">${esc(c.x.name)}</div><div class="f">@${esc(c.handle)} · ${fmt(c.x.followers)}</div></div>`);el.appendChild(d)})}
+function pickH(h){$('#lh').value='@'+h;$('#lh').dispatchEvent(new Event('input'));document.querySelectorAll('.pc').forEach(p=>p.classList.toggle('on',p.dataset.h===h.toLowerCase()));document.getElementById('give').scrollIntoView({behavior:'smooth'})}
+function hour(){const tick=()=>{const n=new Date();const s=3600-(n.getUTCMinutes()*60+n.getUTCSeconds());$('#count').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');$('#hbar').style.width=((1-s/3600)*100).toFixed(1)+'%';$('#hsub').textContent='next payout '+String((n.getUTCHours()+1)%24).padStart(2,'0')+':00 UTC'};tick();setInterval(tick,1000);
+  const inc=LIST.reduce((a,c)=>a+(c.coin?.feeIncome24||0),0);const has=LIST.some(c=>c.coin?.volume24!=null);$('#vault').firstChild.textContent=has?usd(inc)+' ':'— ';$('#vaultsub').textContent=has?'today\'s fee income across every call coin · Dexscreener h24 × 0.7% · ≈ '+usd(inc/24)+' per hour':'no call coin on chain yet · the vault starts at the first launch';
+  const R=LIST.filter(c=>gain(c)!=null).sort((a,b)=>gain(b)-gain(a));const el=$('#race');if(!R.length)return;el.innerHTML='';R.slice(0,4).forEach(c=>{const r=document.createElement('div');r.className='r';r.appendChild(avEl(c.x?.avatar,'av',c.caller));const g=gain(c);r.insertAdjacentHTML('beforeend',`<div><div style="font-weight:600">@${esc(c.caller)} · $${esc(c.asset)} ${c.side==='short'?'↓':'↑'}</div><div class="under" style="margin:0">${fmt(c.x?.followers)} followers</div></div><div class="num pct ${g>=0?'up':'dn'}">${pct(g)}</div>`);el.appendChild(r)})}
+let HI=0,HT;function hero(){const L=LIST.filter(c=>c.x?.exists);clearInterval(HT);const card=$('#ccard');if(!L.length){const c=CREATORS[0];if(!c)return;$('#cav').innerHTML='';$('#cav').appendChild(avEl(c.x.avatar,'av',c.handle).firstChild);$('#cnm').textContent=c.x.name;$('#ch').textContent='@'+c.handle+'  ·  '+fmt(c.x.followers)+' followers  ·  waiting for a call';$('#ccall').textContent='Give them one.';$('#ctxt').textContent='Name an asset and a direction. The market scores it, the vault pays every hour.';return}
+  const show=()=>{const c=L[HI%L.length];card.classList.add('sw');setTimeout(()=>{$('#cav').innerHTML='';$('#cav').appendChild(avEl(c.x?.avatar,'av',c.caller).firstChild);$('#cnm').textContent=c.x?.name||c.caller;$('#ch').textContent='@'+c.caller+'  ·  '+fmt(c.x?.followers)+' followers  ·  incoming call';$('#ccall').textContent='$'+c.asset+' '+(c.side==='short'?'short':'long')+(c.p?' · from '+px(c.p.atPrice??c.atPrice):'');$('#ctxt').textContent=c.t?.text||('Called on '+new Date((c.at||0)*1000).toUTCString().slice(0,16)+'.');const g=gain(c);$('#cstat').innerHTML=`since the call <span class="pct ${g==null?'':g>=0?'up':'dn'}">${pct(g)}</span> · pays every hour`;$('#cdots').innerHTML=L.map((_,i)=>`<i class="${i===HI%L.length?'on':''}"></i>`).join('');card.classList.remove('sw')},420)};show();HT=setInterval(()=>{HI++;show()},6000)}
+function flash(){const el=$('#flash');if(!CREATORS.length)return;let cur=null;const pop=()=>{cur=CREATORS[Math.floor(Math.random()*CREATORS.length)];$('#fav').innerHTML='';$('#fav').appendChild(avEl(cur.x.avatar,'av',cur.handle).firstChild);$('#fnm').textContent=cur.x.name;$('#fh').textContent='@'+cur.handle+' · '+fmt(cur.x.followers)+' followers · on X';el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'));setTimeout(()=>{el.classList.remove('on');setTimeout(()=>el.hidden=true,500)},6500)};el.onclick=()=>{if(cur)pickH(cur.handle);el.classList.remove('on')};setTimeout(pop,4000);setInterval(pop,22000)}
+/* give a call */
+let LX=null,LT=null,LP=null,deb,deb2,SIDE='long';
+$('#lside').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$('#lside').children].forEach(x=>x.classList.toggle('on',x===b));SIDE=b.dataset.s;priceIt()};
+$('#lh').addEventListener('input',()=>{clearTimeout(deb);const h=$('#lh').value.trim().replace(/^@/,'');LX=null;$('#lchk').textContent=h?'reading @'+h+' from X…':'Type a handle or tap one below — we read it from X.';descr();if(!/^[A-Za-z0-9_]{1,15}$/.test(h))return;
+  deb=setTimeout(async()=>{const x=await readHandle(h);if($('#lh').value.trim().replace(/^@/,'')!==h)return;const e=$('#lchk');e.innerHTML='';if(x.exists===false){e.textContent='No account @'+h+' on X.';return}if(x.exists==null){e.textContent='Could not read X right now — try again.';return}LX=x;e.appendChild(avEl(x.avatar,'av',x.handle));e.insertAdjacentHTML('beforeend',`<div><div style="color:var(--ink);font-weight:600">${esc(x.name)}</div><div class="under" style="margin:0">@${esc(x.handle)} · ${fmt(x.followers)} followers</div></div>`);descr()},450)});
+$('#la').oninput=()=>{clearTimeout(deb2);deb2=setTimeout(priceIt,500)};
+async function priceIt(){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();LP=null;descr();if(!a){$('#lprice').textContent='Price appears when the asset is known.';return}$('#lprice').textContent='pricing $'+a+'…';const p=await readPrice(a,LT?unix(LT.created):null);if($('#la').value.replace(/^\$/,'').trim().toUpperCase()!==a)return;if(p.price==null){$('#lprice').textContent='No market found for $'+a+'.';return}LP=p;const base=p.atPrice;const g=base?((p.price/base-1)*100)*(SIDE==='short'?-1:1):null;
+  $('#lprice').innerHTML=`<div><div style="color:var(--ink);font-weight:600">${esc(p.name||a)} · ${px(p.price)}</div><div class="under" style="margin:0">${base?'at the post '+px(base)+' · since <span class="pct '+(g>=0?'up':'dn')+'">'+pct(g)+'</span>':'scored from the moment you put it on the board'} · ${esc(p.src)}</div></div>`;descr()}
+$('#lp').addEventListener('input',()=>{const id=tid($('#lp').value);LT=null;const e=$('#lpost');if(!id){e.hidden=true;priceIt();return}e.hidden=false;e.textContent='reading the post…';clearTimeout(deb);deb=setTimeout(async()=>{const t=await readTweet(id);if(tid($('#lp').value)!==id)return;if(!t.exists){e.textContent=t.exists===false?'No such post on X.':'Could not read X right now.';return}LT=t;e.innerHTML='';e.appendChild(avEl(t.avatar,'av',t.author));e.insertAdjacentHTML('beforeend',`<div><div style="color:var(--ink);font-weight:600">@${esc(t.author)} · ${fmt(t.views)} views</div><div class="under" style="margin:0;font-family:Inter;font-size:13px">${esc(t.text).slice(0,160)}</div></div>`);if(!$('#lh').value){pickH(t.author)}const tk=tickerOf(t.text);if(tk&&!$('#la').value){$('#la').value='$'+tk}const sd=sideOf(t.text);[...$('#lside').children].forEach(x=>x.classList.toggle('on',x.dataset.s===sd));SIDE=sd;priceIt()},450)});
+function descr(){const h=$('#lh').value.trim().replace(/^@/,'');const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();if(!h||!a){$('#ldesc').textContent='— pick a creator and an asset first —';return}const t=(a+(SIDE==='short'?'SHORT':'')).slice(0,10);
+  $('#ldesc').textContent=`$${t} — ${LX?LX.name:'@'+h}'s call, as a coin.\n\n@${h} · $${a} ${SIDE}${LP?.price?' · '+px(LP.atPrice||LP.price)+' at the call':''}${LT?' · receipt: '+LT.url:''}\n\nEvery trade pays 1%: 0.5% to the call vault, 0.2% to the launcher, 0.3% to Pons. Every hour the vault pays the holders of the winning call. Price read live.\n\ncall · every call is a coin · robinhood chain`;
+  $('#tell').href='https://x.com/intent/post?text='+encodeURIComponent(`@${h} you just got a call. $${t} on call — $${a} ${SIDE}. if you're right, holders get paid every hour. `)+encodeURIComponent(location.origin)}
 $('#lcopy').onclick=()=>copy($('#ldesc').textContent);
-$('#ladd').onclick=async()=>{if(!LT)return toast('Paste a post first');const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase()||null;if(!a)return toast('Name the asset');const c=await addCall(LT.id,a,SIDE,'');if(c)location.hash='#calls'};
-$('#rgo').onclick=async()=>{const ca=$('#rca').value.trim().toLowerCase();if(!/^0x[0-9a-f]{40}$/.test(ca))return toast('Not an address');$('#rgo').textContent='reading…';const c=await readCoin(ca);$('#rgo').textContent='Check on chain';const e=$('#rout');
-  if(c.exists===false)return e.textContent='Not a token on Robinhood Chain.';if(c.exists==null)return e.textContent='Could not read the chain right now.';
+$('#ladd').onclick=async()=>{const h=$('#lh').value.trim().replace(/^@/,'');const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();if(!LX)return toast('Pick a creator first');if(!a||!LP)return toast('Name an asset with a live price');const k=(h+':'+a+':'+SIDE).toLowerCase();if(LIST.some(c=>(c.caller+':'+c.asset+':'+c.side).toLowerCase()===k))return toast('That call is already on the board');
+  const c={caller:LX.handle,asset:a,side:SIDE,post:LT?LT.id:'',ca:'',at:LT?unix(LT.created):Math.floor(Date.now()/1000),atPrice:LP.atPrice||LP.price,atSrc:LP.src,x:LX,t:LT,p:LP};LIST.push(c);const l=local();l.push({caller:c.caller,asset:a,side:SIDE,post:c.post,ca:'',at:c.at,atPrice:c.atPrice,atSrc:c.atSrc});saveLocal(l);render();hour();hero();toast('On the board · @'+c.caller+' · $'+a);document.getElementById('calls').scrollIntoView({behavior:'smooth'})};
+$('#rgo').onclick=async()=>{const ca=$('#rca').value.trim().toLowerCase();if(!/^0x[0-9a-f]{40}$/.test(ca))return toast('Not an address');$('#rgo').textContent='…';const c=await readCoin(ca);$('#rgo').textContent='Check';const e=$('#rout');if(c.exists===false)return e.textContent='Not a token on Robinhood Chain.';if(c.exists==null)return e.textContent='Could not read the chain right now.';
   e.innerHTML=`<div><div style="color:var(--ink);font-weight:600">${esc(c.name||'token')} ${c.symbol?'· $'+esc(c.symbol):''}</div><div class="under" style="margin:0">holders ${fmt(c.holders)} · mcap ${usd(c.marketCap)} · vol 24h ${usd(c.volume24)} · fee income 24h ${usd(c.feeIncome24)}</div></div>`;
-  if(LT){const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase()||null;const ex=LIST.find(x=>x.post===LT.id);if(ex){ex.ca=ca;ex.coin=c;const l=local();const li=l.find(x=>x.post===LT.id);if(li)li.ca=ca;saveLocal(l);render();week()}else await addCall(LT.id,a,SIDE,ca)}};
+  const h=$('#lh').value.trim().replace(/^@/,'').toLowerCase();const a=$('#la').value.replace(/^\$/,'').trim().toUpperCase();const li=LIST.find(x=>x.caller.toLowerCase()===h&&x.asset===a);if(li){li.ca=ca;li.coin=c;const l=local();const lc=l.find(x=>x.caller.toLowerCase()===h&&x.asset===a);if(lc)lc.ca=ca;saveLocal(l);render();hour();toast('Coin attached to the call')}};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('#q').focus()}});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.rv').forEach(e=>io.observe(e));
 boot();
 </script>
