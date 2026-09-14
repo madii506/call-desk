@@ -28,7 +28,7 @@ export default async function handler(req, res) {
   // Stooq daily CSV (stocks): Date,Open,High,Low,Close,Volume
   if (!CRYPTO.has(sym)) try {
     const r = await fetch(`https://stooq.com/q/d/l/?s=${sym.toLowerCase()}.us&i=d`, { headers: UA }); dbg.push('stooq:' + r.status);
-    if (r.ok) { const rows = (await r.text()).trim().split('\n').slice(1).map(l => l.split(',')).filter(a => a.length >= 5 && a[4] !== 'N/D');
+    if (r.ok) { const txt = await r.text(); dbg.push('stooq:' + txt.slice(0, 60).replace(/\s+/g, ' ')); const rows = txt.trim().split(/\r?\n/).slice(1).map(l => l.split(/[,;]/)).filter(a => a.length >= 5 && !isNaN(+a[4]));
       if (rows.length) { const ts = rows.map(a => Math.floor(Date.parse(a[0] + 'T21:00:00Z') / 1000)); const cl = rows.map(a => +a[4]);
         return done({ sym, yahoo: null, name: sym, price: cl[cl.length - 1], currency: 'USD', atPrice: pick(ts, cl), at, exchange: 'stooq', src: 'stooq' }); } }
   } catch (e) { dbg.push('stooq:' + e.message); }
