@@ -34,8 +34,9 @@ export default async function handler(req, res) {
   } catch (e) { dbg.push('stooq:' + e.message); }
   // Nasdaq historical (stocks): rows newest first, close like "$412.50"
   if (!CRYPTO.has(sym)) try {
-    const r = await fetch(`https://api.nasdaq.com/api/quote/${sym}/historical?assetclass=stocks&limit=120`, { headers: { ...UA, accept: 'application/json, text/plain, */*', 'accept-language': 'en-US,en;q=0.9', origin: 'https://www.nasdaq.com', referer: 'https://www.nasdaq.com/' } }); dbg.push('nasdaq:' + r.status);
-    if (r.ok) { const j = await r.json(); const rows = (j?.data?.tradesTable?.rows || []).map(x => ({ t: Math.floor(Date.parse(x.date + ' 21:00:00 UTC') / 1000), c: +String(x.close).replace(/[$,]/g, '') })).filter(x => x.t && x.c).sort((a, b) => a.t - b.t);
+    const d0 = new Date(Date.now() - 120 * 86400e3).toISOString().slice(0, 10), d1 = new Date().toISOString().slice(0, 10);
+    const r = await fetch(`https://api.nasdaq.com/api/quote/${sym}/historical?assetclass=stocks&fromdate=${d0}&todate=${d1}&limit=9999`, { headers: { ...UA, accept: 'application/json, text/plain, */*', 'accept-language': 'en-US,en;q=0.9', origin: 'https://www.nasdaq.com', referer: 'https://www.nasdaq.com/' } }); dbg.push('nasdaq:' + r.status);
+    if (r.ok) { const txt = await r.text(); dbg.push('nasdaq:' + txt.slice(0, 80)); let j = {}; try { j = JSON.parse(txt); } catch (e) {} const rows = (j?.data?.tradesTable?.rows || []).map(x => ({ t: Math.floor(Date.parse(x.date + ' 21:00:00 UTC') / 1000), c: +String(x.close).replace(/[$,]/g, '') })).filter(x => x.t && x.c).sort((a, b) => a.t - b.t);
       if (rows.length) { const ts = rows.map(x => x.t), cl = rows.map(x => x.c); let name = sym; try { const q = await fetch(`https://api.nasdaq.com/api/quote/${sym}/info?assetclass=stocks`, { headers: { ...UA, accept: 'application/json', origin: 'https://www.nasdaq.com', referer: 'https://www.nasdaq.com/' } }); if (q.ok) { const qj = await q.json(); name = qj?.data?.companyName || sym; const lp = +String(qj?.data?.primaryData?.lastSalePrice || '').replace(/[$,]/g, ''); if (lp) cl.push(lp), ts.push(Math.floor(Date.now() / 1000)); } } catch (e) {}
         return done({ sym, yahoo: null, name, price: cl[cl.length - 1], currency: 'USD', atPrice: pick(ts, cl), at, exchange: 'nasdaq', src: 'nasdaq' }); } }
   } catch (e) { dbg.push('nasdaq:' + e.message); }
