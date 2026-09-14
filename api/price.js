@@ -32,6 +32,13 @@ export default async function handler(req, res) {
       if (rows.length) { const ts = rows.map(a => Math.floor(Date.parse(a[0] + 'T21:00:00Z') / 1000)); const cl = rows.map(a => +a[4]);
         return done({ sym, yahoo: null, name: sym, price: cl[cl.length - 1], currency: 'USD', atPrice: pick(ts, cl), at, exchange: 'stooq', src: 'stooq' }); } }
   } catch (e) { dbg.push('stooq:' + e.message); }
+  // Nasdaq historical (stocks): rows newest first, close like "$412.50"
+  if (!CRYPTO.has(sym)) try {
+    const r = await fetch(`https://api.nasdaq.com/api/quote/${sym}/historical?assetclass=stocks&limit=120`, { headers: { ...UA, accept: 'application/json, text/plain, */*', 'accept-language': 'en-US,en;q=0.9', origin: 'https://www.nasdaq.com', referer: 'https://www.nasdaq.com/' } }); dbg.push('nasdaq:' + r.status);
+    if (r.ok) { const j = await r.json(); const rows = (j?.data?.tradesTable?.rows || []).map(x => ({ t: Math.floor(Date.parse(x.date + ' 21:00:00 UTC') / 1000), c: +String(x.close).replace(/[$,]/g, '') })).filter(x => x.t && x.c).sort((a, b) => a.t - b.t);
+      if (rows.length) { const ts = rows.map(x => x.t), cl = rows.map(x => x.c); let name = sym; try { const q = await fetch(`https://api.nasdaq.com/api/quote/${sym}/info?assetclass=stocks`, { headers: { ...UA, accept: 'application/json', origin: 'https://www.nasdaq.com', referer: 'https://www.nasdaq.com/' } }); if (q.ok) { const qj = await q.json(); name = qj?.data?.companyName || sym; const lp = +String(qj?.data?.primaryData?.lastSalePrice || '').replace(/[$,]/g, ''); if (lp) cl.push(lp), ts.push(Math.floor(Date.now() / 1000)); } } catch (e) {}
+        return done({ sym, yahoo: null, name, price: cl[cl.length - 1], currency: 'USD', atPrice: pick(ts, cl), at, exchange: 'nasdaq', src: 'nasdaq' }); } }
+  } catch (e) { dbg.push('nasdaq:' + e.message); }
   // Coinbase daily candles (crypto): [time, low, high, open, close, volume], newest first
   try {
     const r = await fetch(`https://api.exchange.coinbase.com/products/${sym}-USD/candles?granularity=86400`, { headers: UA }); dbg.push('coinbase:' + r.status);
